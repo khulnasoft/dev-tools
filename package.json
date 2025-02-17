@@ -1,0 +1,62 @@
+{
+  "name": "khulnasoft.com",
+  "version": "1.1.0",
+  "description": "Add and Sync Khulnasoft.com code snippets to an application",
+  "type": "module",
+  "bin": {
+    "khulnasoft.com": "./cli/main.cjs",
+    "khulnasoft": "./cli/main.cjs"
+  },
+  "files": [
+    "core",
+    "cli",
+    "next",
+    "node",
+    "remix",
+    "server",
+    "types",
+    "vite",
+    "webpack",
+    "angular",
+    "figma"
+  ],
+  "dependencies": {
+    "@amplitude/analytics-node": "^1.3.5",
+    "chokidar": "^4.0.1",
+    "glob": "10.4",
+    "ignore": "^6.0.2",
+    "launch-editor": "^2.6.0",
+    "open": "^10.1.0",
+    "prettier": "^2.8.8",
+    "prompts": "^2.4.2",
+    "typescript": "^5.1.6",
+    "undici": "^5.14.0",
+    "@clack/prompts": "^0.8.2",
+    "@sentry/node": "^7.69.0"
+  },
+  "homepage": "https://khulnasoft.com/",
+  "keywords": [
+    "khulnasoft.com",
+    "khulnasoft",
+    "dev-tools",
+    "devtools",
+    "visual editor",
+    "visual cms",
+    "cms",
+    "drag and drop",
+    "react",
+    "remix",
+    "next",
+    "qwik",
+    "vcp",
+    "visual copilot",
+    "figma to code",
+    "design to code",
+    "figma to react",
+    "figma"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
