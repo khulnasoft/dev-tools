@@ -1,0 +1,60 @@
+{
+  "name": "khulnasoft.com",
+  "version": "1.0.0",
+  "description": "Development tools for Khulnasoft CMS integration",
+  "type": "module",
+  "bin": {
+    "khulnasoft.com": "./cli/main.cjs",
+    "khulnasoft": "./cli/main.cjs"
+  },
+  "files": [
+    "core",
+    "cli",
+    "next",
+    "node",
+    "remix",
+    "server",
+    "types",
+    "vite",
+    "webpack",
+    "angular",
+    "figma"
+  ],
+  "dependencies": {
+    "chokidar": "^4.0.1",
+    "glob": "10.4",
+    "ignore": "^6.0.2",
+    "launch-editor": "^2.6.0",
+    "open": "^10.1.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.6",
+    "undici": "^5.14.0"
+  },
+  "homepage": "https://khulnasoft.com/",
+  "keywords": [
+    "khulnasoft",
+    "cms",
+    "devtools",
+    "development",
+    "khulnasoft.com",
+    "dev-tools",
+    "visual editor",
+    "visual cms",
+    "drag and drop",
+    "react",
+    "remix",
+    "next",
+    "qwik",
+    "vcp",
+    "visual copilot",
+    "figma to code",
+    "design to code",
+    "figma to react",
+    "figma"
+  ],
+  "author": "Khulnasoft",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
