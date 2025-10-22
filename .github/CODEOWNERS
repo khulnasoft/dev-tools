@@ -1,0 +1,28 @@
+# CODEOWNERS file
+# This file defines the code owners for different parts of the repository
+
+# Default owners for everything in the repo
+* @khulnasoft/maintainers
+
+# Package.json and dependency-related files
+package.json @khulnasoft/devtools-team
+package-lock.json @khulnasoft/devtools-team
+
+# Configuration files
+.github/ @khulnasoft/devtools-team
+khulnasoft.config.js @khulnasoft/devtools-team
+
+# Core development tools
+core/ @khulnasoft/core-team
+cli/ @khulnasoft/cli-team
+
+# Framework adapters
+next/ @khulnasoft/nextjs-team
+remix/ @khulnasoft/remix-team
+vite/ @khulnasoft/vite-team
+webpack/ @khulnasoft/webpack-team
+angular/ @khulnasoft/angular-team
+
+# Documentation
+README.md @khulnasoft/docs-team
+README-DEV.md @khulnasoft/docs-team

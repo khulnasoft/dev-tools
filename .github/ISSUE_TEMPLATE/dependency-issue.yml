@@ -1,0 +1,110 @@
+name: Dependency Update Issue
+description: Report an issue with a dependency update
+title: "[Deps] Issue with <package-name> update"
+labels: ["dependencies", "bug"]
+assignees: ["khulnasoft/bot"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue template is for reporting problems with dependency updates. If you're having issues with a specific package update, please fill out the details below.
+
+  - type: input
+    id: package-name
+    attributes:
+      label: Package Name
+      description: The name of the package that's causing issues
+      placeholder: e.g., typescript, express, etc.
+    validations:
+      required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package Version
+      description: The version that was updated to
+      placeholder: e.g., 5.1.6
+    validations:
+      required: true
+
+  - type: dropdown
+    id: update-type
+    attributes:
+      label: Update Type
+      description: What type of update caused this issue?
+      options:
+        - Patch update (bug fixes)
+        - Minor update (new features, backwards compatible)
+        - Major update (breaking changes)
+        - Security update
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: dependency-type
+    attributes:
+      label: Dependency Type
+      description: Is this a production or development dependency?
+      options:
+        - Production dependency (dependencies)
+        - Development dependency (devDependencies)
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue you're experiencing
+      placeholder: |
+        What went wrong after the dependency update?
+        Are there any error messages?
+        What behavior did you expect vs. what actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Update package to version X
+        2. Run command Y
+        3. See error Z
+      value: |
+        1. Apply the dependency update
+        2. Run the affected command/script
+        3. Observe the issue
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Please provide details about your environment
+      placeholder: |
+        - Node.js version:
+        - npm version:
+        - Operating System:
+        - Framework (if applicable): Next.js, Remix, etc.
+        - Other relevant environment details:
+      value: |
+        - Node.js version:
+        - npm version:
+        - Operating System:
+        - Framework (if applicable): Next.js, Remix, etc.
+        - Other relevant environment details:
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might be helpful
+      placeholder: |
+        - Screenshots or logs
+        - Related issues or PRs
+        - Workarounds you've tried
+        - Impact on your project

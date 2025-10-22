@@ -109,3 +109,37 @@ This toolkit is designed to be integrated into other projects (Next.js, Remix, V
 - Check that all dependencies are installed: `npm install`
 - Verify configuration in `khulnasoft.config.js`
 - Check environment variables in `.env` file
+
+## 🤖 Dependabot Configuration
+
+This project includes automated dependency management through GitHub Dependabot:
+
+### Features
+- **Weekly Updates**: Dependencies are checked and updated every Monday at 9:00 AM
+- **Grouped Updates**: Related dependencies (TypeScript, testing tools, etc.) are grouped together
+- **Auto-approval**: Minor and patch updates are automatically approved and merged
+- **Validation**: All updates are tested across Node.js 18, 20, and 22
+- **Security Updates**: Critical security patches are prioritized
+
+### Configuration Files
+- `.github/dependabot.yml` - Main Dependabot configuration
+- `.github/workflows/dependabot.yml` - Validation workflow for updates
+- `.github/CODEOWNERS` - Specifies who reviews dependency updates
+
+### Update Process
+1. Dependabot creates a PR with dependency updates
+2. GitHub Actions validate the changes across multiple Node.js versions
+3. If tests pass, minor/patch updates are auto-approved and merged
+4. Major updates require manual review by the devtools team
+
+### Notification
+- Reviewers are automatically assigned based on CODEOWNERS
+- PRs are labeled with `dependencies` and `automated` tags
+- Issue templates are available for reporting dependency problems
+
+### Customizing Updates
+To modify the update schedule or behavior, edit `.github/dependabot.yml`. Common changes:
+- Adjust update frequency in the `schedule` section
+- Modify grouping rules in the `groups` section
+- Add reviewers in the `reviewers` section
+- Update ignored dependencies in the `ignore` section
