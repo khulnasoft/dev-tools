@@ -15,6 +15,46 @@ Dependencies have already been installed. If you need to reinstall:
 npm install
 ```
 
+**Note:** The repository is configured with a comprehensive `.gitignore` file that excludes:
+- `node_modules/` - Dependencies (install with `npm install`)
+- Build outputs (dist/, build/, etc.)
+- Environment files (.env*)
+- IDE and OS files (.vscode/, .DS_Store, etc.)
+- Cache directories and logs
+
+## Repository Setup
+
+### For New Contributors
+1. Clone the repository: `git clone <repository-url>`
+2. Install dependencies: `npm install`
+3. Copy environment template: `cp .env.example .env`
+4. Start development: `npm run dev`
+
+### For Development
+```bash
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
+# Start development
+npm run dev
+
+# Run linting
+npm run lint
+
+# Build the project
+npm run build
+```
+
+### Important Files
+- `.gitignore` - Excludes build artifacts, dependencies, and development files
+- `.env.example` - Template for environment variables
+- `khulnasoft.config.js` - Project configuration
+- `package.json` - Dependencies and scripts
+
 ## Available Scripts
 
 ### Development
