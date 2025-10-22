@@ -1,0 +1,84 @@
+import type { CodeGenTools, CodegenTurn, ContentMessageItemToolResult, FusionConfig, GenerateCompletionStep, ProjectFile, UserSource, WorkspaceFolder } from "$/ai-utils";
+import type { DevToolsSys } from "../core";
+import { type DevServerOrchestrator } from "./launch/dev-server-orchestrator";
+import type { CodeGenEventEmitter } from "./codegen";
+import type { Credentials } from "./credentials";
+export interface LLMToolCalls {
+    name: CodeGenTools;
+    input: Record<string, any>;
+    id: string;
+    abortController: AbortController;
+}
+export interface ToolResolution {
+    toolResult: string;
+    isError: boolean;
+    title?: string;
+}
+export interface FusionContext {
+    devServerOrchestrator?: DevServerOrchestrator;
+    git: boolean;
+    gitRemote?: string;
+    gitAutoInit?: boolean;
+    gitFeatureBranch?: string;
+}
+export interface ToolContext extends Partial<FusionContext> {
+    sys: DevToolsSys;
+    credentials: Credentials;
+    files: ProjectFile[];
+    user: UserSource;
+    position: string;
+    emitter: CodeGenEventEmitter;
+    fusionConfig: FusionConfig | undefined;
+    signal: AbortSignal;
+    workingDirectory: string;
+    allowedCommands: RegExp[];
+    getAllFiles: (options: {
+        getDotFiles?: boolean;
+        pattern?: string;
+    }) => Promise<string[]>;
+    restore: (options: {
+        location: "before" | "after";
+        predicate: (turn: CodegenTurn | null, index: number) => boolean;
+        dryRun?: boolean;
+        revert?: boolean;
+        forceReplay?: boolean;
+        debug?: string;
+    }) => Promise<{
+        undone: string[] | null;
+        message: string;
+    }>;
+    bashWorkingDirectory: string;
+    filterText: (text: string) => string;
+    resolveWorkspacePath: (path: string, forceWorkspace: boolean) => {
+        resolvedPath: string;
+        workspaceFolder?: WorkspaceFolder;
+    };
+    absolutePathToWorkspaceUrl: (absolutePath: string) => string | undefined;
+    workspaceFolders: Array<{
+        path: string;
+        name?: string;
+    }>;
+    patchFusionConfig: (patch: Partial<FusionConfig>) => void;
+    passThrough: (toolCall: LLMToolCalls, signal: AbortSignal) => Promise<ToolResolution>;
+    readFile: (filePath: string) => Promise<string | null>;
+    writeFile: (filePath: string, content: string | Uint8Array) => Promise<boolean>;
+    deleteFile: (filePath: string) => Promise<boolean>;
+    fileExists: (filePath: string) => Promise<boolean>;
+    listDir: (dirPath: string) => Promise<string[]>;
+    stat: (filePath: string) => Promise<{
+        isDirectory: () => boolean;
+        isFile: () => boolean;
+    } | null>;
+}
+export declare function resolveToolCalls(toolContext: ToolContext, toolCalls: LLMToolCalls[], existingToolResults: ContentMessageItemToolResult[] | undefined, onStep: (step: GenerateCompletionStep) => void): Promise<ContentMessageItemToolResult[]>;
+interface RipgrepMatch {
+    path: string;
+    lineNumber: number;
+    lineContent: string;
+}
+interface RipgrepResult {
+    matches: RipgrepMatch[];
+}
+export declare function runRipgrep(sys: DevToolsSys, bashWorkingDirectory: string, pattern: string, includeGlob?: string, excludeGlob?: string): Promise<RipgrepResult>;
+export declare function newAbortError(): Error;
+export {};

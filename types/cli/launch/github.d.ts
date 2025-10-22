@@ -1,0 +1,3 @@
+export declare const getKVHiddenComment: (key: string, value: string) => string;
+export declare const getPreviewUrl: (projectId: string, branchName: string) => string;
+export declare const getInitialDescription: (projectId: string, branchName: string) => string;
