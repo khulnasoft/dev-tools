@@ -1,8 +1,8 @@
 import type { DevToolsSys } from "../../types";
 import type { CLIArgs } from "../index";
 import { type Credentials } from "../credentials";
-import type { Component, ComponentIssue } from "./types";
-export declare const displayComponentLibrarySummary: (components: Component[], indexedComponents: Component[], startTime: number, numFailed: number | undefined, isForce: boolean | undefined, designSystemName: string, issues?: ComponentIssue[]) => void;
+import type { ComponentTask, TokenTask } from "./types";
+export declare const displayComponentLibrarySummary: (components: ComponentTask[], indexedComponents: ComponentTask[], startTime: number, failedComponents: string[] | undefined, isForce: boolean | undefined, designSystemName: string, designSystemId?: string, numIconsIndexed?: number, tokenGroupsFound?: TokenTask[], tokenGroupsToIndex?: TokenTask[], tokenGroupsFailed?: string[]) => void;
 export interface RepoIndexingDoc {
     name: string;
     content: string | {

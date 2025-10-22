@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-declare function NextKhulnaSoftDevTools(options?: {
+declare function NextKhulnasoftDevTools(options?: {
   enabled?: boolean;
   devToolsServerPort?: number;
 }): (config?: NextConfig) => NextConfig;
 
-export default NextKhulnaSoftDevTools;
+export default NextKhulnasoftDevTools;

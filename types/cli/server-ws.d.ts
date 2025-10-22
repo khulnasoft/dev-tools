@@ -1,5 +1,7 @@
 import type { Duplex } from "node:stream";
 import type { IncomingMessage } from "node:http";
+import type { ServerOptions } from "ws";
+import type { WebSocket } from "ws";
 export type SocketRequest = {
     id: number;
     jsonrpc: string;
@@ -26,8 +28,6 @@ export type SocketQueue = {
     result?: SocketResponse["result"];
     error?: SocketResponse["error"];
 };
-import type { ServerOptions } from "ws";
-import type { WebSocket } from "ws";
 type RegisterFn<T = any> = (params: T, socketId: string) => Promise<any> | any;
 type SocketEvents = {
     listening: () => Promise<void> | void;

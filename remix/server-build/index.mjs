@@ -9,7 +9,7 @@ const future = remixBuild.future;
 const publicPath = remixBuild.publicPath;
 const RemixRootApp = remixRoutes.root.module.default;
 const devToolsServerUrl = typeof process !== "undefined" && process.env.KHULNASOFT_REMIX_DEVTOOLS_URL ? process.env.KHULNASOFT_REMIX_DEVTOOLS_URL : `http://localhost:5273/`;
-const KhulnaSoftDevToolsScript = process.env.NODE_ENV !== "development" ? () => null : function KhulnaSoftDevToolsScript2() {
+const KhulnasoftDevToolsScript = process.env.NODE_ENV !== "development" ? () => null : function KhulnasoftDevToolsScript2() {
   const url = new URL(`/~khulnasoft-dev-tools.js`, devToolsServerUrl);
   let c = `/* Khulnasoft Devtools (Remix) */
 `;
@@ -37,7 +37,7 @@ const KhulnasoftRootApp = () => {
     ...remixRoot,
     props: {
       ...remixRootProps,
-      children: [...remixRootChildren, KhulnaSoftDevToolsScript()]
+      children: [...remixRootChildren, KhulnasoftDevToolsScript()]
     }
   };
 };

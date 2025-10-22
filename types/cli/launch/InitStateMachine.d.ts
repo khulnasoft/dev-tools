@@ -1,5 +1,7 @@
 import type { DevToolsSys } from "@khulnasoft.com/dev-tools/core";
 import { type FusionConfig, type WorkspaceFolder, type InitState, type InitStateStep, type InitStatusLog } from "$/ai-utils";
+type ValidatedWorkspaceFolder = WorkspaceFolder & Required<Pick<WorkspaceFolder, "name" | "path">>;
+type WorkspaceFolderWithRepoInfo = ValidatedWorkspaceFolder & Required<Pick<WorkspaceFolder, "repoName" | "repoUrl">>;
 import type { Credentials } from "../credentials";
 import { type GitBackupDownloadResult } from "../backup";
 export interface InitConfig {
@@ -22,8 +24,20 @@ export declare class InitStateMachine {
     initState: InitState;
     constructor(config: InitConfig);
     checkout(branchName: string, ref: string, repoPath: string): Promise<boolean>;
-    execAsync(exec: string, args: string[], cwd?: string): Promise<string>;
-    git(args: string[], cwd?: string): Promise<string>;
+    execAsync(exec: string, args: string[], cwd?: string, retry?: number): Promise<string>;
+    git(args: string[], cwd?: string, retry?: number): Promise<string>;
+    performBackup({ sys, credentials, fusionConfig, volumePath, repositories, isConnectedToProvider, forcedFullBackup, }: {
+        sys: DevToolsSys;
+        credentials: Credentials;
+        fusionConfig: FusionConfig;
+        volumePath: string;
+        repositories: ValidatedWorkspaceFolder[];
+        isConnectedToProvider: boolean;
+        forcedFullBackup: boolean;
+    }): Promise<void>;
+    performRegularBackup(args: Omit<Parameters<typeof this.performBackup>[0], "isConnectedToProvider" | "forcedFullBackup">): Promise<void>;
+    performOfflineBackup(args: Omit<Parameters<typeof this.performBackup>[0], "isConnectedToProvider" | "forcedFullBackup">): Promise<void>;
+    performForcedFullBackup(args: Omit<Parameters<typeof this.performBackup>[0], "isConnectedToProvider" | "forcedFullBackup">): Promise<void>;
     init(): Promise<boolean>;
     addInitLog(type: "status" | "log" | "error" | "complete", message: string, options?: {
         step?: InitStateStep;
@@ -32,14 +46,23 @@ export declare class InitStateMachine {
     }): void;
     clearInitLogs(): void;
     hasFilesButNoGit(repoPath: string): Promise<boolean>;
-    step1CheckDirectories(config: InitConfig, repositories: Required<WorkspaceFolder>[]): Promise<void>;
-    step2ConfigureGitRepositories(config: InitConfig, repositories: Required<WorkspaceFolder>[]): Promise<void>;
-    step3ConfigureGitUser(config: InitConfig, repositories: Required<WorkspaceFolder>[]): Promise<void>;
-    step4StashChanges(config: InitConfig, repositories: Required<WorkspaceFolder>[]): Promise<void>;
-    step5CollectRepoInfo(config: InitConfig, repositories: Required<WorkspaceFolder>[]): Promise<void>;
+    step1CheckDirectories(volumePath: string, repositories: ValidatedWorkspaceFolder[]): Promise<void>;
+    step2ConfigureGitRepositories(volumePath: string, repositories: ValidatedWorkspaceFolder[]): Promise<void>;
+    step3ConfigureGitUser(volumePath: string, repositories: ValidatedWorkspaceFolder[]): Promise<void>;
+    step4StashChanges(volumePath: string, repositories: ValidatedWorkspaceFolder[]): Promise<void>;
+    step5CollectRepoInfo(config: InitConfig, volumePath: string, repositories: ValidatedWorkspaceFolder[]): Promise<void>;
     private isGitConfigured;
     private getGitRemoteUrl;
     private sanitizeGitRemoteUrl;
+    /**
+     * Check if the repository URL is from a standard git hosting provider
+     */
+    private isStandardGitHost;
+    /**
+     * Check if the repository host is reachable via network
+     * Performs DNS resolution and TCP connection check
+     */
+    private checkHostConnectivity;
     private cleanupLockFiles;
     validateGitRepo(repoPath: string): Promise<void>;
     /**
@@ -48,9 +71,20 @@ export declare class InitStateMachine {
      */
     private restoreFromPartialBackup;
     private initializeGitRepo;
+    private refreshRepoConfig;
+    runInitializationCommand({ repo, tempCloningDir, repoPath, initCommand, }: {
+        repo: ValidatedWorkspaceFolder;
+        tempCloningDir: string;
+        repoPath: string;
+        initCommand: string;
+    }): Promise<{
+        outcome: boolean;
+        error?: Error;
+    }>;
     cloneRepository({ repo, repoPath, backupResult, }: {
-        repo: Required<WorkspaceFolder>;
+        repo: WorkspaceFolderWithRepoInfo;
         repoPath: string;
         backupResult: GitBackupDownloadResult | undefined;
     }): Promise<boolean>;
 }
+export {};

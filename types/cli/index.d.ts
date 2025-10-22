@@ -15,7 +15,7 @@ export interface CLIArgs {
     dryrun?: boolean;
     /** Auto-confirm all prompts */
     yes?: boolean;
-    /** KhulnaSoft space ID */
+    /** khulnasoft.com space ID */
     spaceId?: string;
     /** Component name to use */
     componentName?: string;
@@ -48,8 +48,6 @@ export interface CLIArgs {
      * Example: --includeDirectories "packages/foo, packages/bar"
      **/
     includeDirectories?: string;
-    /** Whether to store repository indexing files */
-    storeRepoIndexing?: boolean;
     /** Token to use for figma */
     token?: string;
     /** Url to start from */
@@ -76,12 +74,6 @@ export interface CLIArgs {
     workspace?: string;
     /** Output structured JSON data instead of human-readable logs */
     jsonOutput?: boolean;
-    /** Local mode */
-    local?: boolean;
-    /** Inlined to khulnasoft.config.json file */
-    configJson?: string;
-    /** Server URL */
-    serverUrl?: string;
     /** Remove all mappings from the space, publishing zero mappings even if mapper files exist */
     clearMappings?: boolean;
     /** Enabled tools, list of strings separated by commas */
@@ -90,6 +82,11 @@ export interface CLIArgs {
     index?: boolean;
     /** If true list indexed repositories */
     listIndexedRepos?: boolean;
-    /** MCP support */
-    mcpSupport?: boolean;
+    /** Disable MCP support */
+    disableMcp?: boolean;
+    /** Clear all stored credentials (logout) */
+    reset?: boolean;
+    /** Comma-separated list of component names to reindex */
+    components?: string;
+    nativeApp?: boolean;
 }

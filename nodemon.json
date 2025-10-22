@@ -1,0 +1,36 @@
+{
+  "watch": [
+    "src",
+    "types",
+    "core",
+    "cli",
+    "figma",
+    "next",
+    "remix",
+    "vite",
+    "webpack",
+    "angular",
+    "server",
+    "node"
+  ],
+  "ext": "ts,js,tsx,jsx,json",
+  "ignore": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "*.test.ts",
+    "*.test.js",
+    "*.spec.ts",
+    "*.spec.js"
+  ],
+  "exec": "npm run build",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 500,
+  "verbose": true,
+  "restartable": "rs",
+  "colours": true,
+  "legacyWatch": false
+}

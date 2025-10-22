@@ -1,8 +1,9 @@
-import type { CodeGenTools, CodegenTurn, ContentMessageItemToolResult, FusionConfig, GenerateCompletionStep, ProjectFile, UserSource, WorkspaceFolder } from "$/ai-utils";
+import type { AccessResult, CodeGenPosition, CodeGenTools, CodegenTurn, ContentMessageItemToolResult, FusionConfig, GenerateCompletionStep, Permission, ProjectFile, UserSource, WorkspaceFolder } from "$/ai-utils";
 import type { DevToolsSys } from "../core";
 import { type DevServerOrchestrator } from "./launch/dev-server-orchestrator";
 import type { CodeGenEventEmitter } from "./codegen";
 import type { Credentials } from "./credentials";
+import type { LocalMCPClientManager } from "./mcp-local";
 export interface LLMToolCalls {
     name: CodeGenTools;
     input: Record<string, any>;
@@ -19,19 +20,20 @@ export interface FusionContext {
     git: boolean;
     gitRemote?: string;
     gitAutoInit?: boolean;
-    gitFeatureBranch?: string;
 }
 export interface ToolContext extends Partial<FusionContext> {
     sys: DevToolsSys;
     credentials: Credentials;
     files: ProjectFile[];
     user: UserSource;
-    position: string;
+    position: CodeGenPosition;
     emitter: CodeGenEventEmitter;
     fusionConfig: FusionConfig | undefined;
+    canCollapseWorkspace: boolean;
     signal: AbortSignal;
     workingDirectory: string;
     allowedCommands: RegExp[];
+    localMCPManager: LocalMCPClientManager | undefined;
     getAllFiles: (options: {
         getDotFiles?: boolean;
         pattern?: string;
@@ -54,6 +56,7 @@ export interface ToolContext extends Partial<FusionContext> {
         workspaceFolder?: WorkspaceFolder;
     };
     absolutePathToWorkspaceUrl: (absolutePath: string) => string | undefined;
+    setHasPlanToApply: (value: boolean) => void;
     workspaceFolders: Array<{
         path: string;
         name?: string;
@@ -61,13 +64,20 @@ export interface ToolContext extends Partial<FusionContext> {
     patchFusionConfig: (patch: Partial<FusionConfig>) => void;
     passThrough: (toolCall: LLMToolCalls, signal: AbortSignal) => Promise<ToolResolution>;
     readFile: (filePath: string) => Promise<string | null>;
-    writeFile: (filePath: string, content: string | Uint8Array) => Promise<boolean>;
-    deleteFile: (filePath: string) => Promise<boolean>;
-    fileExists: (filePath: string) => Promise<boolean>;
+    writeFile: (filePath: string, content: string | Uint8Array) => Promise<string | null>;
+    deleteFile: (filePath: string) => Promise<string | null>;
+    fileExists: (filePath: string) => Promise<{
+        absolutePath: string | undefined;
+        recommendedPath: string | undefined;
+        workspaceFolder: WorkspaceFolder | undefined;
+        virtual: boolean;
+    }>;
     listDir: (dirPath: string) => Promise<string[]>;
+    evaluateAccess: (resource: string, permission: Permission) => AccessResult;
     stat: (filePath: string) => Promise<{
         isDirectory: () => boolean;
         isFile: () => boolean;
+        size: number;
     } | null>;
 }
 export declare function resolveToolCalls(toolContext: ToolContext, toolCalls: LLMToolCalls[], existingToolResults: ContentMessageItemToolResult[] | undefined, onStep: (step: GenerateCompletionStep) => void): Promise<ContentMessageItemToolResult[]>;
@@ -80,5 +90,13 @@ interface RipgrepResult {
     matches: RipgrepMatch[];
 }
 export declare function runRipgrep(sys: DevToolsSys, bashWorkingDirectory: string, pattern: string, includeGlob?: string, excludeGlob?: string): Promise<RipgrepResult>;
+/**
+ * Returns true if query is likely a string literal rather than a regex.
+ * Returns false otherwise.
+ * This is intended to ensure that queries such as "import {" do not get
+ * interpreted as invalid regex values by ripgrep.
+ * @param query - The query to check
+ */
+export declare const isLikelyFixedString: (query: string) => boolean;
 export declare function newAbortError(): Error;
 export {};

@@ -1,2 +1,2 @@
-import type { KhulnaSoftDevToolsEditButton } from ".";
-export declare function initDocumentListeners(editButton: KhulnaSoftDevToolsEditButton): void;
+import type { KhulnasoftDevToolsEditButton } from ".";
+export declare function initDocumentListeners(editButton: KhulnasoftDevToolsEditButton): void;

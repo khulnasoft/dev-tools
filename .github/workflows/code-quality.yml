@@ -1,0 +1,170 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+
+jobs:
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        language: ['javascript', 'typescript']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
+  performance:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  bundle-analyzer:
+    name: Bundle Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          # Install bundle analyzer if available
+          npm install -g webpack-bundle-analyzer || echo "Bundle analyzer not available"
+
+          # Check bundle sizes
+          du -sh dist/ 2>/dev/null || echo "No dist directory"
+          du -sh build/ 2>/dev/null || echo "No build directory"
+
+      - name: Comment bundle size on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+
+            let bundleSize = 'Bundle size information not available';
+            try {
+              const distStats = fs.statSync('dist');
+              bundleSize = `Dist directory: ${distStats.size} bytes`;
+            } catch (e) {
+              try {
+                const buildStats = fs.statSync('build');
+                bundleSize = `Build directory: ${buildStats.size} bytes`;
+              } catch (e) {
+                bundleSize = 'No build output found';
+              }
+            }
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📊 Bundle Size Report\n\n${bundleSize}`
+            });
+
+  documentation:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check README links
+        run: |
+          # Check if README has required sections
+          grep -q "Installation" README.md || echo "Warning: Installation section missing"
+          grep -q "Usage" README.md || echo "Warning: Usage section missing"
+          grep -q "License" README.md || echo "Warning: License section missing"
+
+      - name: Check TypeScript documentation
+        run: |
+          # Check if public APIs have JSDoc comments
+          find types -name "*.d.ts" -exec grep -l "/**" {} \; | wc -l || echo "No JSDoc found"
+
+      - name: Validate package.json
+        run: |
+          # Validate package.json structure
+          node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')) && 'Valid JSON'"
+          grep -q "description" package.json || echo "Warning: Description missing"
+          grep -q "version" package.json || echo "Warning: Version missing"

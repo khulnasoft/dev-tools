@@ -1,4 +1,4 @@
-import { KhulnaSoftDevToolsPlugin } from "../webpack/index.mjs";
+import { KhulnasoftDevToolsPlugin } from "../webpack/index.mjs";
 const orgProcessExit = process.exit;
 
 const noopProcessExit = (code) => {
@@ -23,7 +23,7 @@ export default (opts = {}) => {
     return Object.assign({}, nextConfig, {
       webpack(config, options) {
         if (opts.enabled !== false) {
-          config.plugins.push(new KhulnaSoftDevToolsPlugin(opts));
+          config.plugins.push(new KhulnasoftDevToolsPlugin(opts));
         }
 
         if (typeof nextConfig.webpack === "function") {

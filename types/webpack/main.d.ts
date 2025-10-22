@@ -1,9 +1,9 @@
-export declare class KhulnaSoftDevToolsPlugin {
+export declare class KhulnasoftDevToolsPlugin {
     private readonly opts;
-    constructor(opts?: WebpackKhulnaSoftDevToolsOptions);
+    constructor(opts?: WebpackKhulnasoftDevToolsOptions);
     apply(c: any): void;
 }
-export interface WebpackKhulnaSoftDevToolsOptions {
+export interface WebpackKhulnasoftDevToolsOptions {
     enabled?: boolean;
     devToolsServerPort?: number;
 }

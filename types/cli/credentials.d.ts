@@ -1,5 +1,6 @@
 import type { DevToolsSys } from "../types";
 import type { CLIArgs } from "./index";
+import type { Feature } from "$/ai-utils";
 export interface CredentialsOptions {
     forceSpaceId?: string;
     khulnasoftPublicKey?: boolean;
@@ -11,7 +12,6 @@ export interface FigmaAuth {
     access_token: string;
     oauth: boolean;
 }
-export type Feature = "component-mapping";
 export interface KhulnasoftCodegenUsage {
     total: number | undefined;
     fast: number | undefined;
@@ -50,3 +50,4 @@ export declare function getFigmaAuth(sys: DevToolsSys): Promise<FigmaAuth>;
 export declare function getKhulnasoftCodegenUsage(khulnasoftPublicKey: string, khulnasoftPrivateKey: string): Promise<KhulnasoftCodegenUsage>;
 export declare function getKhulnasoftAuth(sys: DevToolsSys, preferSpaceId?: string): Promise<KhulnasoftAuth>;
 export declare function storeCredentials(sys: DevToolsSys, credentials: Credentials): void;
+export declare function clearCredentials(sys: DevToolsSys): boolean;

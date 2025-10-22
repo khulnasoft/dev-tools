@@ -4,7 +4,16 @@ export declare function extractSignatureInfo(content: string): {
     sessionKey?: string;
     snippetId?: string;
 };
-export declare function getAllProjectFiles(basePath: string, globPattern?: string, extraIgnorePatterns?: string[], getDotFiles?: boolean): Promise<string[]>;
+export interface GetAllProjectFilesOptions {
+    sys?: DevToolsSys;
+    basePath: string;
+    globPattern?: string | string[];
+    extraIgnorePatterns?: string[];
+    dot?: boolean;
+    deep?: number;
+    gitignore?: boolean;
+}
+export declare function getAllProjectFiles({ basePath, globPattern, extraIgnorePatterns, dot, deep, gitignore, sys, }: GetAllProjectFilesOptions): Promise<string[]>;
 export declare function findKhulnasoftFiles(basePath: string, targetContentId: string, targetSessionKey: string): Promise<FileNode[]>;
 export declare function filterNonImportantFiles(files: string[]): string[];
 export declare function getIgnorePatterns(basePath: string): (path: string) => boolean;

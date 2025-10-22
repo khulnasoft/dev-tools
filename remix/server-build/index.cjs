@@ -26,8 +26,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var server_build_exports = {};
-__export(server_build_exports, {
+var index_exports = {};
+__export(index_exports, {
   assets: () => assets,
   assetsBuildDirectory: () => assetsBuildDirectory,
   entry: () => entry,
@@ -35,7 +35,7 @@ __export(server_build_exports, {
   publicPath: () => publicPath,
   routes: () => routes
 });
-module.exports = __toCommonJS(server_build_exports);
+module.exports = __toCommonJS(index_exports);
 var remixBuild = __toESM(require("@remix-run/dev/server-build"));
 var React = __toESM(require("react"));
 const assets = remixBuild.assets;
@@ -46,7 +46,7 @@ const future = remixBuild.future;
 const publicPath = remixBuild.publicPath;
 const RemixRootApp = remixRoutes.root.module.default;
 const devToolsServerUrl = typeof process !== "undefined" && process.env.KHULNASOFT_REMIX_DEVTOOLS_URL ? process.env.KHULNASOFT_REMIX_DEVTOOLS_URL : `http://localhost:5273/`;
-const KhulnaSoftDevToolsScript = process.env.NODE_ENV !== "development" ? () => null : function KhulnaSoftDevToolsScript2() {
+const KhulnasoftDevToolsScript = process.env.NODE_ENV !== "development" ? () => null : function KhulnasoftDevToolsScript2() {
   const url = new URL(`/~khulnasoft-dev-tools.js`, devToolsServerUrl);
   let c = `/* Khulnasoft Devtools (Remix) */
 `;
@@ -74,7 +74,7 @@ const KhulnasoftRootApp = () => {
     ...remixRoot,
     props: {
       ...remixRootProps,
-      children: [...remixRootChildren, KhulnaSoftDevToolsScript()]
+      children: [...remixRootChildren, KhulnasoftDevToolsScript()]
     }
   };
 };

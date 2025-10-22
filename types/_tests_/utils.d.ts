@@ -28,7 +28,7 @@ interface CLI {
     spawn(command: string, args: string[]): Promise<number>;
 }
 export declare function testCLI(name: string, template: string | undefined, handler: (cli: Handler, expect: ExpectStatic) => Promise<void>, timeout?: number, skip?: boolean): void;
-type Handler = (cmd: "khulnasoftio" | "create-khulnasoftio", args: string[], options?: {
+type Handler = (cmd: "khulnasoft" | "create-khulnasoft", args: string[], options?: {
     debug?: boolean;
 }) => CLI;
 export declare function createCLI(template: string | undefined, handler: (cli: Handler) => Promise<void>): Promise<void>;

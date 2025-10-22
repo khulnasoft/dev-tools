@@ -54,6 +54,7 @@ export interface DevToolsSys extends DevToolsPath {
     getFrameworks: () => Framework[];
     getRepoInfo: (githubWorkingDirectory?: string) => Promise<RepoInfo>;
     Sentry: typeof import("@sentry/node") | undefined;
+    connectionTracker: import("./types/connection-tracker").ConnectionTracker;
     ts: typeof import("typescript");
     version: string;
     sdkVersion: SDK_VERSION_VALUES | null;

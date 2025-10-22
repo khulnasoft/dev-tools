@@ -8,9 +8,11 @@ export declare class TerminalBuffer {
     private currentColumn;
     private maxLines;
     private maxColumns;
+    private chunks;
     constructor(maxLines?: number, maxColumns?: number);
     write(data: string): void;
     private ensureLineExists;
+    getWrite(): string;
     getContent(): string;
     clear(): void;
     /**

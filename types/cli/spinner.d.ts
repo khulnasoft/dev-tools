@@ -4,13 +4,3 @@ export declare const spinner: () => {
     message: (msg?: string) => void;
     extra: (msg?: string) => void;
 };
-export declare function block({ input, output, overwrite, hideCursor, }?: {
-    input?: (NodeJS.ReadStream & {
-        fd: 0;
-    }) | undefined;
-    output?: (NodeJS.WriteStream & {
-        fd: 1;
-    }) | undefined;
-    overwrite?: boolean | undefined;
-    hideCursor?: boolean | undefined;
-}): () => void;

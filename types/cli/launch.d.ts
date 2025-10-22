@@ -1,9 +1,6 @@
 import type { DevToolsSys } from "@khulnasoft.com/dev-tools/core";
 import type { CLIArgs } from "./index";
-/**
- * Large random-ish port number that is unlikely to be used
- */
-export declare const PROXY_PORT = 48752;
+export declare const DEFAULT_PROXY_PORT = 48752;
 export interface LaunchArgs extends CLIArgs {
     /** Project ID for the dev server. Only needed when running in a remote container. */
     projectId?: string;
@@ -68,6 +65,45 @@ export interface LaunchArgs extends CLIArgs {
      * @default false
      */
     local?: boolean;
+    /**
+     * Enable privacy mode for codegen.
+     * When enabled, encrypts sensitive data in communication with the AI service.
+     *
+     * @default false
+     */
+    privacyMode?: boolean;
+    /**
+     * Auto-detect dev server URL and port from command output.
+     * When enabled, the system will parse the dev server output to automatically
+     * detect the server URL and port instead of requiring manual configuration.
+     *
+     * @default false
+     */
+    autoDetectDevServer?: boolean;
+    /** Inlined to khulnasoft.config.json file */
+    configJson?: string;
+    /** Path to fusion.config.json file */
+    configPath?: string;
+    /**
+     * Enable HTTPS server.
+     * When enabled, creates both HTTP and HTTPS servers.
+     *
+     * @default false
+     */
+    https?: boolean;
+    /**
+     * Custom domain to use instead of localhost in proxy URLs.
+     * Useful for development with custom SSL certificates.
+     */
+    localHttpsDomain?: string;
+    /**
+     * Enable native app mode.
+     * When enabled, runs setup and dev commands without proxy server functionality.
+     * Useful for native app development where the simulator handles its own server.
+     *
+     * @default false
+     */
+    nativeApp?: boolean;
 }
 export declare function runFusionCommand({ sys, args, }: {
     sys: DevToolsSys;

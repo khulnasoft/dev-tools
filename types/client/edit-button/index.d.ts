@@ -1,4 +1,4 @@
-export declare class KhulnaSoftDevToolsEditButton extends HTMLElement {
+export declare class KhulnasoftDevToolsEditButton extends HTMLElement {
     openInKhulnasoft: HTMLAnchorElement | null;
     block: HTMLElement | null;
     constructor();

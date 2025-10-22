@@ -1,0 +1,23 @@
+import type { DevToolsSys } from "../../types";
+import type { Credentials } from "../credentials";
+import type { WorkspaceConfiguration } from "$/ai-utils";
+export declare const discoverIcons: (sys: DevToolsSys, credentials: Credentials, sessionId: string, opts?: {
+    designSystemPackage?: string;
+    workspaceConfig?: WorkspaceConfiguration;
+    debug?: boolean;
+}) => Promise<{
+    icons: string[];
+    usage: string;
+    hash: string | undefined;
+}>;
+export declare const processIcons: (credentials: Credentials, iconDiscovery: {
+    icons: string[];
+    usage: string;
+    hash?: string;
+}, opts: {
+    designSystemId: string;
+    sessionId: string;
+    debug?: boolean;
+    previousHash?: string | null;
+    force?: boolean;
+}) => Promise<boolean>;

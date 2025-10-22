@@ -22,8 +22,8 @@ module.exports = (opts = {}) => {
     return Object.assign({}, nextConfig, {
       webpack(config, options) {
         if (opts.enabled !== false) {
-          const { KhulnaSoftDevToolsPlugin } = require("../webpack/index.cjs");
-          config.plugins.push(new KhulnaSoftDevToolsPlugin(opts));
+          const { KhulnasoftDevToolsPlugin } = require("../webpack/index.cjs");
+          config.plugins.push(new KhulnasoftDevToolsPlugin(opts));
         }
 
         if (typeof nextConfig.webpack === "function") {

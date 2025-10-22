@@ -3,6 +3,6 @@
  * OpenAI api does not return usage information for some of its apis
  * This function returns a rough estimate of the tokens used for a given string
  * The function has been copied from webapp and written by  @aziz
- * Ref: https://github.com/KhulnaSoft/khulnasoft-internal/pull/5255/files
+ * Ref: https://github.com/KhulnasoftIO/khulnasoft-internal/pull/5255/files
  */
 export declare function estimateCodeTokens(text: string): number;

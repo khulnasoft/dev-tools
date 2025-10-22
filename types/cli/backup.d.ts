@@ -1,6 +1,6 @@
 import type { DevToolsSys } from "../types";
 import type { Credentials } from "./credentials";
-import { type GitBackupUploadUrlResult, type GitBackupUploadUrlOptions, type GitBackupRecordOptions, type GitBackupRecordResult, type BackupMetadata, type WorkspaceConfiguration, type CodegenRuntimeStatus } from "$/ai-utils";
+import { type GitBackupUploadUrlResult, type GitBackupUploadUrlOptions, type GitBackupRecordOptions, type GitBackupRecordResult, type BackupMetadata, type WorkspaceConfiguration, type CodegenRuntimeStatus, type BackupGitRepoResult } from "$/ai-utils";
 interface BackupGitRepoOptions {
     sys: DevToolsSys;
     credentials: Credentials;
@@ -9,23 +9,16 @@ interface BackupGitRepoOptions {
     repoPath: string;
     aiBranch: string;
     featureBranch: string;
-    originalRepoUrl: string;
     workspace: WorkspaceConfiguration | undefined;
+    /**
+     * If true, the system is connected to the git provider.
+     * If false, the system is offline and will not fetch any branches from origin.
+     */
+    isConnectedToProvider: boolean;
     debug: boolean;
+    forcedFullBackup: boolean;
+    canAbortMerge: boolean;
 }
-export interface BackupGitRepoResultValid {
-    success: true;
-    partial: boolean;
-    repoUrl: string;
-    empty: boolean;
-    lastCommitHash: string;
-    backupRef: string | undefined;
-}
-export interface BackupGitRepoResultInvalid {
-    success: false;
-    reason: "project_removed";
-}
-export type BackupGitRepoResult = BackupGitRepoResultValid | BackupGitRepoResultInvalid;
 /**
  * Creates a backup of git repository changes made by the AI system.
  *
@@ -38,12 +31,18 @@ export type BackupGitRepoResult = BackupGitRepoResultValid | BackupGitRepoResult
  * The aiBranch is where the AI creates commits as work progresses, while featureBranch
  * is the base branch where work started (usually "main").
  */
-export declare function backupGitRepo({ sys, credentials, projectId, branchName, repoPath, aiBranch, featureBranch, workspace, originalRepoUrl, debug, }: BackupGitRepoOptions): Promise<BackupGitRepoResult>;
-interface InitialCommitHashResult {
+export declare function backupGitRepo({ sys, credentials, projectId, branchName, repoPath, aiBranch, featureBranch, workspace, isConnectedToProvider, debug, forcedFullBackup, canAbortMerge, }: BackupGitRepoOptions): Promise<BackupGitRepoResult>;
+type InitialCommitHashResult = {
+    initialBranch: string;
+    initialCommitHash: string | undefined;
+    partial: false;
+    forcedFullBackup: true;
+} | {
     initialBranch: string;
     initialCommitHash: string;
     partial: boolean;
-}
+    forcedFullBackup: false;
+};
 /**
  * Determines the initial commit hash and whether to create a partial or full backup.
  *
@@ -51,15 +50,19 @@ interface InitialCommitHashResult {
  * - The repo is an example/starter template (users can't push to origin, need to fork)
  * - There's no origin remote configured
  *
- * For partial backups, we fetch the latest state of the feature branch from origin
+ * For partial backups, we fetch the latest state of the chosen upstream branch from origin
  * to ensure the backup has the correct commit range reference.
  */
-export declare function getInitialCommitHash({ sys, repoPath, featureBranch, debug, workspace, }: {
+export declare function getInitialCommitHash({ sys, repoPath, featureBranch, debug, workspace, isConnectedToProvider, forcedFullBackup, credentials, projectId, }: {
     sys: DevToolsSys;
     repoPath: string;
     featureBranch: string;
     debug: boolean;
     workspace: WorkspaceConfiguration | undefined;
+    isConnectedToProvider: boolean;
+    forcedFullBackup: boolean;
+    credentials: Credentials;
+    projectId: string;
 }): Promise<InitialCommitHashResult>;
 /**
  * Requests a signed upload URL for git backup

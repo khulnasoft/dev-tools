@@ -6,5 +6,6 @@ export declare const SUPPORTED_FRAMEWORKS: {
     next: string;
     qwik: string;
     vue: string;
+    native: string;
 };
 export declare function getSDKDetailsForFramework(framework: string): SDKVersionInfo[];
