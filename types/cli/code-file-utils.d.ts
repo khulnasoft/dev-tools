@@ -1,0 +1,11 @@
+export declare function shouldIncludeFile(
+  inputFile: string,
+  ctx: {
+    foundFiles: string[];
+    allFiles: string[];
+    selectedFilePaths: Map<string, number>;
+    cwd: string;
+    appRootDir: string;
+    fallbackImportance: number | 0;
+  },
+): number | 0;

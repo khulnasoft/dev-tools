@@ -1,1 +1,1 @@
-export * from "../types/webpack";
+export * from "../types/webpack/main";

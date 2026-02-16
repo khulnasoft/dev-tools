@@ -117,7 +117,9 @@ The Devtools webpack plugin is for React projects. If your project is using Next
 
 ```js
 // webpack config file
-const { KhulnasoftDevToolsPlugin } = require("@khulnasoft.com/dev-tools/webpack");
+const {
+  KhulnasoftDevToolsPlugin,
+} = require("@khulnasoft.com/dev-tools/webpack");
 
 module.exports = {
   plugins: [new KhulnasoftDevToolsPlugin()],

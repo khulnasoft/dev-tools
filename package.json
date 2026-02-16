@@ -1,11 +1,52 @@
 {
   "name": "khulnasoft.com",
-  "version": "1.1.0",
+  "version": "1.11.1",
   "description": "Add and Sync Khulnasoft.com code snippets to an application",
   "type": "module",
   "bin": {
-    "khulnasoft.com": "./cli/main.cjs",
-    "khulnasoft": "./cli/main.cjs"
+    "khulnasoft": "./cli/main.cjs",
+    "khulnasoft.com": "./cli/main.cjs"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@amplitude/analytics-node": "^1.3.8",
+    "@clack/prompts": "^0.10.1",
+    "@sentry/node": "^9.16.0",
+    "@tootallnate/quickjs-emscripten": "^0.23.0",
+    "@types/ws": "^8.18.1",
+    "bufferutil": "^4.0.8",
+    "chokidar": "^4.0.1",
+    "cli-progress": "^3.12.0",
+    "cookie-parser": "^1.4.7",
+    "detect-port": "^2.1.0",
+    "express": "^4.18.2",
+    "get-port": "^7.1.0",
+    "glob": "^13.0.3",
+    "http-proxy-3": "^1.23.2",
+    "ignore": "^6.0.2",
+    "launch-editor": "^2.11.1",
+    "micromatch": "^4.0.5",
+    "open": "^10.1.0",
+    "pac-resolver": "^7.0.1",
+    "prettier": "^3.3.3",
+    "prompts": "^2.4.2",
+    "strip-ansi": "^7.1.2",
+    "typescript": "^5.1.6",
+    "undici": "^7.22.0",
+    "utf-8-validate": "^6.0.3",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@figma/rest-api-spec": "^0.31.0",
+    "@types/cli-progress": "^3.11.6",
+    "node-fetch": "^2.7.0",
+    "tsx": "^4.19.3"
+  },
+  "optionalDependencies": {
+    "@lydell/node-pty": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "files": [
     "core",
@@ -18,26 +59,12 @@
     "vite",
     "webpack",
     "angular",
-    "figma"
+    "figma",
+    "vendors"
   ],
-  "dependencies": {
-    "@amplitude/analytics-node": "^1.3.5",
-    "chokidar": "^4.0.1",
-    "glob": "10.4",
-    "ignore": "^6.0.2",
-    "launch-editor": "^2.6.0",
-    "open": "^10.1.0",
-    "prettier": "^2.8.8",
-    "prompts": "^2.4.2",
-    "typescript": "^5.1.6",
-    "undici": "^5.14.0",
-    "@clack/prompts": "^0.8.2",
-    "@sentry/node": "^7.69.0"
-  },
-  "homepage": "https://khulnasoft.com/",
   "keywords": [
-    "khulnasoft.com",
     "khulnasoft",
+    "khulnasoft.com",
     "dev-tools",
     "devtools",
     "visual editor",
@@ -55,8 +82,6 @@
     "figma to react",
     "figma"
   ],
-  "engines": {
-    "node": ">=18"
-  },
+  "homepage": "https://khulnasoft.com/",
   "license": "MIT"
 }

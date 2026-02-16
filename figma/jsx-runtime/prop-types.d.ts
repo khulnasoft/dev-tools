@@ -40,7 +40,7 @@ export interface Validator<T> {
     propName: string,
     componentName: string,
     location: string,
-    propFullName: string
+    propFullName: string,
   ): Error | null;
   [nominalTypeHack]?:
     | {
@@ -64,8 +64,8 @@ export type WeakValidationMap<T> = {
   [K in keyof T]?: null extends T[K]
     ? Validator<T[K] | null | undefined>
     : undefined extends T[K]
-    ? Validator<T[K] | null | undefined>
-    : Validator<T[K]>;
+      ? Validator<T[K] | null | undefined>
+      : Validator<T[K]>;
 };
 
 export type InferType<V> = V extends Validator<infer T> ? T : any;
@@ -84,21 +84,21 @@ export const element: Requireable<ReactElementLike>;
 export const symbol: Requireable<symbol>;
 export const elementType: Requireable<ReactComponentLike>;
 export function instanceOf<T>(
-  expectedClass: new (...args: any[]) => T
+  expectedClass: new (...args: any[]) => T,
 ): Requireable<T>;
 export function oneOf<T>(types: readonly T[]): Requireable<T>;
 export function oneOfType<T extends Validator<any>>(
-  types: T[]
+  types: T[],
 ): Requireable<NonNullable<InferType<T>>>;
 export function arrayOf<T>(type: Validator<T>): Requireable<T[]>;
 export function objectOf<T>(
-  type: Validator<T>
+  type: Validator<T>,
 ): Requireable<{ [K in keyof any]: T }>;
 export function shape<P extends ValidationMap<any>>(
-  type: P
+  type: P,
 ): Requireable<InferProps<P>>;
 export function exact<P extends ValidationMap<any>>(
-  type: P
+  type: P,
 ): Requireable<Required<InferProps<P>>>;
 
 /**
@@ -116,7 +116,7 @@ export function checkPropTypes(
   values: any,
   location: string,
   componentName: string,
-  getStack?: () => any
+  getStack?: () => any,
 ): void;
 
 /**

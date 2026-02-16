@@ -1,3 +1,133 @@
-"use strict";var b=Object.create;var p=Object.defineProperty;var h=Object.getOwnPropertyDescriptor;var E=Object.getOwnPropertyNames;var y=Object.getPrototypeOf,x=Object.prototype.hasOwnProperty;var V=(n,e)=>{for(var t in e)p(n,t,{get:e[t],enumerable:!0})},g=(n,e,t,o)=>{if(e&&typeof e=="object"||typeof e=="function")for(let s of E(e))!x.call(n,s)&&s!==t&&p(n,s,{get:()=>e[s],enumerable:!(o=h(e,s))||o.enumerable});return n};var D=(n,e,t)=>(t=n!=null?b(y(n)):{},g(e||!n||!n.__esModule?p(t,"default",{value:n,enumerable:!0}):t,n)),I=n=>g(p({},"__esModule",{value:!0}),n);var j={};V(j,{khulnasoftDevTools:()=>C});module.exports=I(j);var u=require("../core/index.cjs"),d=require("../node/index.cjs"),w=require("../server/index.cjs");async function f(n,e){let t=await n.readFile(e);return typeof t=="string"?A(t):null}function A(n){let e={},t=n.replace(/\r\n?/gm,`
-`),o;for(;(o=R.exec(t))!=null;){let s=o[1],r=o[2]||"";r=r.trim();let c=r[0];r=r.replace(/^(['"`])([\s\S]*)\1$/gm,"$2"),c==='"'&&(r=r.replace(/\\n/g,`
-`),r=r.replace(/\\r/g,"\r")),e[s]=r}return e}var R=/(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/gm;var m=D(require("node:path"),1);function C(n={}){return{name:"vite-plugin-khulnasoft-dev-tools",async configureServer(t){let o=await(0,d.createDevToolsNodeSys)({cwd:m.default.normalize(t.config.root)}),s=await(0,u.createDevTools)(o),r=await(0,w.createDevToolsServer)({...s,getClientId:()=>"vite-khulnasoft-dev-tools",closeAppServer:async()=>{o.debug("close server"),await t?.close()},restartAppServer:async()=>{o.debug("restart server"),await t?.restart()},enableAppWatch:async c=>{if(c){o.debug("enable watch"),t?.watcher.add(t.config.root);let i=o.join(t.config.root,".git"),l=o.join(t.config.root,"node_modules");t?.watcher.unwatch([i,l])}else o.debug("disable watch"),t?.watcher.unwatch(t.config.root);return c},...o,...n});t.watcher.on("change",async c=>{if(c.includes(".env")){let i=await f(o,c);i&&Object.keys(i).forEach(a=>{process.env[a]=i[a]})}}),t.middlewares.use(async(c,i,l)=>{try{let a=i.end;i.end=function(...$){if((i.getHeader("Content-Type")||"").toString().includes("text/html")){let T=(0,u.getClientScript)(r.getUrl());i.write(`<script>${T}</script>`)}return a.apply(this,$)},l()}catch(a){l(a)}})}}}0&&(module.exports={khulnasoftDevTools});
+"use strict";
+var x = Object.create;
+var p = Object.defineProperty;
+var S = Object.getOwnPropertyDescriptor;
+var R = Object.getOwnPropertyNames;
+var A = Object.getPrototypeOf,
+  I = Object.prototype.hasOwnProperty;
+var b = (e, o) => {
+    for (var t in o) p(e, t, { get: o[t], enumerable: !0 });
+  },
+  u = (e, o, t, n) => {
+    if ((o && typeof o == "object") || typeof o == "function")
+      for (let s of R(o))
+        !I.call(e, s) &&
+          s !== t &&
+          p(e, s, {
+            get: () => o[s],
+            enumerable: !(n = S(o, s)) || n.enumerable,
+          });
+    return e;
+  };
+var $ = (e, o, t) => (
+    (t = e != null ? x(A(e)) : {}),
+    u(
+      o || !e || !e.__esModule
+        ? p(t, "default", { value: e, enumerable: !0 })
+        : t,
+      e,
+    )
+  ),
+  O = (e) => u(p({}, "__esModule", { value: !0 }), e);
+var C = {};
+b(C, { khulnasoftDevTools: () => P });
+module.exports = O(C);
+var f = require("../core/index.cjs"),
+  _ = require("../node/index.cjs"),
+  E = require("../server/index.cjs");
+async function d(e, o) {
+  let t = await e.readFile(o);
+  return typeof t == "string" ? D(t) : null;
+}
+function D(e) {
+  let o = {},
+    t = e.replace(
+      /\r\n?/gm,
+      `
+`,
+    ),
+    n;
+  for (; (n = h.exec(t)) != null; ) {
+    let s = n[1],
+      r = n[2] || "";
+    r = r.trim();
+    let c = r[0];
+    ((r = r.replace(/^(['"`])([\s\S]*)\1$/gm, "$2")),
+      c === '"' &&
+        ((r = r.replace(
+          /\\n/g,
+          `
+`,
+        )),
+        (r = r.replace(/\\r/g, "\r"))),
+      (o[s] = r));
+  }
+  return o;
+}
+var h =
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/gm;
+var T = $(require("node:path"), 1);
+var g = "/~khulnasoft-dev-tools.js";
+function P(e = {}) {
+  return {
+    name: "vite-plugin-khulnasoft-dev-tools",
+    async configureServer(t) {
+      if (process.argv.includes("codegen")) return;
+      let n = await (0, _.createDevToolsNodeSys)({
+          cwd: T.default.normalize(t.config.root),
+        }),
+        s = await (0, f.createDevTools)(n),
+        r = await (0, E.createDevToolsServer)({
+          ...s,
+          getClientId: () => "vite-khulnasoft-dev-tools",
+          closeAppServer: async () => {
+            (n.debug("close server"), await t?.close());
+          },
+          restartAppServer: async () => {
+            (n.debug("restart server"), await t?.restart());
+          },
+          enableAppWatch: async (c) => {
+            if (c) {
+              (n.debug("enable watch"), t?.watcher.add(t.config.root));
+              let i = n.join(t.config.root, ".git"),
+                l = n.join(t.config.root, "node_modules");
+              t?.watcher.unwatch([i, l]);
+            } else
+              (n.debug("disable watch"), t?.watcher.unwatch(t.config.root));
+            return c;
+          },
+          ...n,
+          ...e,
+        });
+      (t.watcher.on("change", async (c) => {
+        if (c.includes(".env")) {
+          let i = await d(n, c);
+          i &&
+            Object.keys(i).forEach((a) => {
+              process.env[a] = i[a];
+            });
+        }
+      }),
+        t.middlewares.use(async (c, i, l) => {
+          try {
+            let a = i.end;
+            ((i.end = function (...w) {
+              if (
+                (i.getHeader("Content-Type") || "")
+                  .toString()
+                  .includes("text/html")
+              ) {
+                let m = new URL(g, r.getUrl());
+                i.write(`<script defer src="${m}"></script>`);
+              }
+              return a.apply(this, w);
+            }),
+              l());
+          } catch (a) {
+            l(a);
+          }
+        }));
+    },
+  };
+}
+0 && (module.exports = { khulnasoftDevTools });
