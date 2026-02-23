@@ -26,8 +26,8 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var server_build_exports = {};
-__export(server_build_exports, {
+var index_exports = {};
+__export(index_exports, {
   assets: () => assets,
   assetsBuildDirectory: () => assetsBuildDirectory,
   entry: () => entry,
@@ -35,7 +35,7 @@ __export(server_build_exports, {
   publicPath: () => publicPath,
   routes: () => routes
 });
-module.exports = __toCommonJS(server_build_exports);
+module.exports = __toCommonJS(index_exports);
 var remixBuild = __toESM(require("@remix-run/dev/server-build"));
 var React = __toESM(require("react"));
 const assets = remixBuild.assets;

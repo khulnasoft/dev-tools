@@ -1,4 +1,4 @@
-# KhulnaSoft - CMS Dev tools
+# Khulnasoft.com Visual CMS Devtools
 
 Setup and integrate [Khulnasoft.com Visual CMS](https://www.khulnasoft.com/) during development using the Devtools plugin. Khulnasoft Devtools can be integrated with a project's development through either a [Next.js config](#nextjs), [Remix config](#remix), [Vite plugin](#vite), or [Webpack plugin](#webpack).
 
@@ -22,6 +22,29 @@ This command will update the config file (such as next.config.js, or vite.config
 
 ```
 npm run dev
+```
+
+## Local Development
+
+To develop and test Khulnasoft Devtools locally:
+
+1. In the devtools directory, build and link the package:
+
+```bash
+cd dist/dev-tools
+npm link
+```
+
+2. In your application directory, link to the local devtools:
+
+```bash
+npm link @khulnasoft.com/dev-tools
+```
+
+3. You can now run the Figma generate command:
+
+```bash
+npx khulnasoft.com figma generate
 ```
 
 ## Manual Installation

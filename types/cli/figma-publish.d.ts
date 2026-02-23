@@ -1,19 +1,6 @@
-import type { DevTools, DevToolsSys, ExportType, RepoInfo } from "../types";
+import type { DevTools, DevToolsSys, RepoInfo } from "../types";
 import type { CLIArgs } from "./index";
-import { type FigmaAuth } from "./credentials";
-export interface FigmaKhulnasoftLink {
-    khulnasoftName: string;
-    figmaName: string;
-    figmaKey: string;
-    figmaUrl?: string;
-    inputMapper?: string;
-    originalInputMapper?: string;
-    exportType?: ExportType;
-    importName?: string;
-    importPath?: string;
-    source: string;
-    loc?: string;
-}
+import { type FigmaKhulnasoftLink } from "./figma-utils";
 export declare const runFigmaPublish: (sys: DevToolsSys, args: CLIArgs) => Promise<undefined>;
 export declare const FIGMA_CONNECT_CALL = "figmaMapping";
 export declare function findAllMappingFiles(sys: DevToolsSys): Promise<string[]>;
@@ -28,8 +15,7 @@ export interface PublishedMapping {
     privateKey: string;
     userId: string;
 }
-export declare function findMappingsFromFiles({ figmaAuth, force, mappingFiles, print, sys, }: {
-    figmaAuth?: FigmaAuth;
+export declare function findMappingsFromFiles({ force, mappingFiles, print, sys, }: {
     force?: boolean;
     mappingFiles: string[];
     print: boolean;
@@ -37,4 +23,5 @@ export declare function findMappingsFromFiles({ figmaAuth, force, mappingFiles, 
 }): Promise<{
     figmaKhulnasoftLinks: FigmaKhulnasoftLink[];
     foundErrors: boolean;
+    figmaLinksToResolve: string[];
 }>;

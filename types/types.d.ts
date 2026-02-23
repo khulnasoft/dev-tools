@@ -50,6 +50,7 @@ export interface DevToolsSys extends DevToolsPath {
     getDeviceId: () => Promise<string>;
     getFrameworks: () => Framework[];
     getRepoInfo: () => Promise<RepoInfo>;
+    Sentry: typeof import("@sentry/node") | undefined;
     ts: typeof import("typescript");
     version: string;
     sdkVersion: SDK_VERSION_VALUES | null;

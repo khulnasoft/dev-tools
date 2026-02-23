@@ -74,6 +74,7 @@ export interface FigmaTokenMapper {
 }
 export declare function figmaMapping<T extends BaseFigmaProps = FigmaProps>(_config: FigmaMappingWithKeyMapper<T> | FigmaMappingWithUrlMapper<T> | FigmaGenericMapper | FigmaTokenMapper): void;
 export declare function explicitFalse(value: any): any;
+export declare function html(strings: TemplateStringsArray, ...values: any[]): any;
 export interface ChildElement<P = any> {
     type: any;
     props: P;

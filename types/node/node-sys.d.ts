@@ -9,4 +9,6 @@ export declare function configHasProperty(contents: Record<string, any>, key: st
 export declare function readConfigFile(): Promise<any>;
 export declare function writeConfigFile(contents: Record<string, any>): Promise<void>;
 export declare function getGitRemoteURL(repoPath: string): string;
+export declare function findPackageJsonDir(dir: string): string | null;
+export declare function findAppRootDir(dir: string): string | null;
 export {};

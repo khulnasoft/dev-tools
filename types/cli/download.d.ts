@@ -1,6 +1,6 @@
 import type { CLIArgs } from "./index";
 import type { DevToolsSys } from "../types";
-import { type FigmaKhulnasoftLink } from "./figma-publish";
+import { type FigmaKhulnasoftLink } from "./figma-utils";
 interface KVGetRequest {
     privateKey: string;
     spaceId: string;

@@ -9,5 +9,5 @@ export interface ArtifactItem {
     artifactTitle?: string;
     incomplete?: boolean;
 }
-export declare const runCodeIndexing: (sys: DevToolsSys, args: CLIArgs) => Promise<void>;
+export declare const runCodeIndexing: (_sys: DevToolsSys, _args: CLIArgs) => Promise<void>;
 export declare const codeIndexing: (sys: DevToolsSys, credentials: Credentials) => Promise<void>;
