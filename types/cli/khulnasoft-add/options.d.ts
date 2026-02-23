@@ -1,2 +1,2 @@
-import type { AddCliOptions } from "packages/dev-tools/types";
+import type { AddCliOptions } from "../../types";
 export declare function getOptions(cwd: string, args: string[]): AddCliOptions;

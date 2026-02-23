@@ -16,8 +16,8 @@ export namespace JSX {
   interface IntrinsicAttributes extends React.JSX.IntrinsicAttributes {
     children?: any;
   }
-  interface IntrinsicClassAttributes<T>
-    extends React.JSX.IntrinsicClassAttributes<T> {
+  interface IntrinsicClassAttributes<T> extends React.JSX
+    .IntrinsicClassAttributes<T> {
     children?: any;
   }
   interface IntrinsicElements extends React.JSX.IntrinsicElements {}
@@ -31,7 +31,7 @@ export namespace JSX {
 export function jsx(
   type: React.ElementType,
   props: unknown,
-  key?: React.Key
+  key?: React.Key,
 ): React.ReactElement;
 
 /**
@@ -42,5 +42,5 @@ export function jsx(
 export function jsxs(
   type: React.ElementType,
   props: unknown,
-  key?: React.Key
+  key?: React.Key,
 ): React.ReactElement;

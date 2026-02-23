@@ -1,0 +1,33 @@
+/**
+ * Custom instruction/rules discovery utilities
+ * Handles finding and loading custom instructions from the filesystem
+ */
+import type { DevToolsSys } from "../../types";
+import type { CustomInstruction } from "$/ai-utils";
+/**
+ * Get custom instructions from the filesystem
+ * Searches for instruction files in:
+ * - .cursor/rules/ - Rule files (.mdc or RULE.md only)
+ * - .khulnasoft/rules/ - Rule files (.mdc or RULE.md only)
+ * - .claude/skills/ - SKILL.md files only (subdirectories supported)
+ * - .khulnasoft/skills/ - SKILL.md files only (subdirectories supported)
+ * - .cursorrules, .khulnasoftrules, .windsurfrules
+ * - .github/copilot-instructions.md
+ *
+ * @param sys - System utilities
+ * @param projectDir - Project directory (used for relative paths)
+ * @param currentDir - Starting directory for search
+ * @param rootDir - Root directory to stop search
+ * @returns Array of discovered custom instructions (both rules and skills)
+ */
+export declare function getCustomInstructions({
+  sys,
+  projectDir,
+  currentDir,
+  rootDir,
+}: {
+  sys: DevToolsSys;
+  projectDir: string;
+  currentDir: string;
+  rootDir: string;
+}): Promise<CustomInstruction[]>;

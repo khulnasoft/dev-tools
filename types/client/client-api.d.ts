@@ -1,12 +1,44 @@
-import type { ComponentRegistry, ConnectedKhulnasoft, GetRegistryOptions, LaunchEditorFile, LoadComponentOptions, LocalConfig, RegisterComponentOptions, SetComponentInfoOptions, SetComponentInputOptions, UnregisterComponentOptions, ValidatedKhulnasoft } from "../types";
-export declare const apiConnectKhulnasoft: (publicApiKey: string, privateAuthKey: string, kind: string | null) => Promise<ConnectedKhulnasoft>;
+import type {
+  ComponentRegistry,
+  ConnectedKhulnasoft,
+  GetRegistryOptions,
+  LaunchEditorFile,
+  LoadComponentOptions,
+  LocalConfig,
+  RegisterComponentOptions,
+  SetComponentInfoOptions,
+  SetComponentInputOptions,
+  UnregisterComponentOptions,
+  ValidatedKhulnasoft,
+} from "../types";
+export declare const apiConnectKhulnasoft: (
+  publicApiKey: string,
+  privateAuthKey: string,
+  kind: string | null,
+) => Promise<ConnectedKhulnasoft>;
 export declare const apiValidateKhulnasoft: () => Promise<ValidatedKhulnasoft>;
-export declare const apiLaunchEditor: (file: LaunchEditorFile) => Promise<unknown>;
-export declare const apiRegistry: (opts?: GetRegistryOptions) => Promise<ComponentRegistry>;
-export declare const apiLoadComponent: (opts: LoadComponentOptions) => Promise<ComponentRegistry>;
-export declare const apiRegisterComponent: (opts: RegisterComponentOptions) => Promise<ComponentRegistry>;
-export declare const apiSetComponentInfo: (opts: SetComponentInfoOptions) => Promise<ComponentRegistry>;
-export declare const apiSetComponentInput: (opts: SetComponentInputOptions) => Promise<ComponentRegistry>;
-export declare const apiUnregisterComponent: (opts: UnregisterComponentOptions) => Promise<ComponentRegistry>;
-export declare const apiDevToolsEnabled: (enabled: boolean) => Promise<ComponentRegistry>;
+export declare const apiLaunchEditor: (
+  file: LaunchEditorFile,
+) => Promise<unknown>;
+export declare const apiRegistry: (
+  opts?: GetRegistryOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiLoadComponent: (
+  opts: LoadComponentOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiRegisterComponent: (
+  opts: RegisterComponentOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiSetComponentInfo: (
+  opts: SetComponentInfoOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiSetComponentInput: (
+  opts: SetComponentInputOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiUnregisterComponent: (
+  opts: UnregisterComponentOptions,
+) => Promise<ComponentRegistry>;
+export declare const apiDevToolsEnabled: (
+  enabled: boolean,
+) => Promise<ComponentRegistry>;
 export declare const apiLocalConfig: () => Promise<LocalConfig>;

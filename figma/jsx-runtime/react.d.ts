@@ -85,7 +85,7 @@ declare namespace React {
    */
   type ElementType<
     P = any,
-    Tag extends keyof JSX.IntrinsicElements = keyof JSX.IntrinsicElements
+    Tag extends keyof JSX.IntrinsicElements = keyof JSX.IntrinsicElements,
   > =
     | { [K in Tag]: P extends JSX.IntrinsicElements[K] ? K : never }[Tag]
     | ComponentType<P>;
@@ -121,7 +121,7 @@ declare namespace React {
          *
          * @see {@link https://legacy.reactjs.org/docs/legacy-context.html#referencing-context-in-stateless-function-components React Docs}
          */
-        deprecatedLegacyContext?: any
+        deprecatedLegacyContext?: any,
       ) => ReactNode)
     | (new (
         props: P,
@@ -130,7 +130,7 @@ declare namespace React {
          *
          * @see {@link https://legacy.reactjs.org/docs/legacy-context.html#referencing-context-in-lifecycle-methods React Docs}
          */
-        deprecatedLegacyContext?: any
+        deprecatedLegacyContext?: any,
       ) => Component<any, any>);
 
   /**
@@ -171,7 +171,7 @@ declare namespace React {
    */
   type RefCallback<T> = {
     bivarianceHack(
-      instance: T | null
+      instance: T | null,
     ):
       | void
       | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES];
@@ -221,7 +221,7 @@ declare namespace React {
       | ForwardRefExoticComponent<any>
       | { new (props: any): Component<any> }
       | ((props: any, deprecatedLegacyContext?: any) => ReactNode)
-      | keyof JSX.IntrinsicElements
+      | keyof JSX.IntrinsicElements,
   > =
     // need to check first if `ref` is a valid prop for ts@3.0
     // otherwise it will infer `{}` instead of `never`
@@ -326,7 +326,7 @@ declare namespace React {
     P = any,
     T extends string | JSXElementConstructor<any> =
       | string
-      | JSXElementConstructor<any>
+      | JSXElementConstructor<any>,
   > {
     type: T;
     props: P;
@@ -338,11 +338,16 @@ declare namespace React {
    */
   export interface ReactComponentElement<
     T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-    P = Pick<ComponentProps<T>, Exclude<keyof ComponentProps<T>, "key" | "ref">>
+    P = Pick<
+      ComponentProps<T>,
+      Exclude<keyof ComponentProps<T>, "key" | "ref">
+    >,
   > extends ReactElement<P, Exclude<T, number>> {}
 
-  export interface FunctionComponentElement<P>
-    extends ReactElement<P, FunctionComponent<P>> {
+  export interface FunctionComponentElement<P> extends ReactElement<
+    P,
+    FunctionComponent<P>
+  > {
     ref?:
       | ("ref" extends keyof P
           ? P extends { ref?: infer R | undefined }
@@ -354,10 +359,12 @@ declare namespace React {
 
   export type CElement<
     P,
-    T extends Component<P, ComponentState>
+    T extends Component<P, ComponentState>,
   > = ComponentElement<P, T>;
-  export interface ComponentElement<P, T extends Component<P, ComponentState>>
-    extends ReactElement<P, ComponentClass<P>> {
+  export interface ComponentElement<
+    P,
+    T extends Component<P, ComponentState>,
+  > extends ReactElement<P, ComponentClass<P>> {
     ref?: LegacyRef<T> | undefined;
   }
 
@@ -372,25 +379,28 @@ declare namespace React {
   // string fallback for custom web-components
   export interface DOMElement<
     P extends HTMLAttributes<T> | SVGAttributes<T>,
-    T extends Element
+    T extends Element,
   > extends ReactElement<P, string> {
     ref: LegacyRef<T>;
   }
 
   // ReactHTML for ReactHTMLElement
-  export interface ReactHTMLElement<T extends HTMLElement>
-    extends DetailedReactHTMLElement<AllHTMLAttributes<T>, T> {}
+  export interface ReactHTMLElement<
+    T extends HTMLElement,
+  > extends DetailedReactHTMLElement<AllHTMLAttributes<T>, T> {}
 
   export interface DetailedReactHTMLElement<
     P extends HTMLAttributes<T>,
-    T extends HTMLElement
+    T extends HTMLElement,
   > extends DOMElement<P, T> {
     type: keyof ReactHTML;
   }
 
   // ReactSVG for ReactSVGElement
-  export interface ReactSVGElement
-    extends DOMElement<SVGAttributes<SVGElement>, SVGElement> {
+  export interface ReactSVGElement extends DOMElement<
+    SVGAttributes<SVGElement>,
+    SVGElement
+  > {
     type: keyof ReactSVG;
   }
 
@@ -424,7 +434,7 @@ declare namespace React {
 
   export type CFactory<
     P,
-    T extends Component<P, ComponentState>
+    T extends Component<P, ComponentState>,
   > = ComponentFactory<P, T>;
   export type ClassicFactory<P> = CFactory<
     P,
@@ -436,12 +446,13 @@ declare namespace React {
     ...children: ReactNode[]
   ) => DOMElement<P, T>;
 
-  export interface HTMLFactory<T extends HTMLElement>
-    extends DetailedHTMLFactory<AllHTMLAttributes<T>, T> {}
+  export interface HTMLFactory<
+    T extends HTMLElement,
+  > extends DetailedHTMLFactory<AllHTMLAttributes<T>, T> {}
 
   export interface DetailedHTMLFactory<
     P extends HTMLAttributes<T>,
-    T extends HTMLElement
+    T extends HTMLElement,
   > extends DOMFactory<P, T> {
     (
       props?: (ClassAttributes<T> & P) | null,
@@ -449,8 +460,10 @@ declare namespace React {
     ): DetailedReactHTMLElement<P, T>;
   }
 
-  interface SVGFactory
-    extends DOMFactory<SVGAttributes<SVGElement>, SVGElement> {
+  interface SVGFactory extends DOMFactory<
+    SVGAttributes<SVGElement>,
+    SVGElement
+  > {
     (
       props?: (ClassAttributes<SVGElement> & SVGAttributes<SVGElement>) | null,
       ...children: ReactNode[]
@@ -531,25 +544,25 @@ declare namespace React {
   // DOM Elements
   /** @deprecated */
   function createFactory<T extends HTMLElement>(
-    type: keyof ReactHTML
+    type: keyof ReactHTML,
   ): HTMLFactory<T>;
   /** @deprecated */
   function createFactory(type: keyof ReactSVG): SVGFactory;
   /** @deprecated */
   function createFactory<P extends DOMAttributes<T>, T extends Element>(
-    type: string
+    type: string,
   ): DOMFactory<P, T>;
 
   // Custom components
   /** @deprecated */
   function createFactory<P>(
-    type: FunctionComponent<P>
+    type: FunctionComponent<P>,
   ): FunctionComponentFactory<P>;
   /** @deprecated */
   function createFactory<
     P,
     T extends Component<P, ComponentState>,
-    C extends ComponentClass<P>
+    C extends ComponentClass<P>,
   >(type: ClassType<P, T, C>): CFactory<P, T>;
   /** @deprecated */
   function createFactory<P>(type: ComponentClass<P>): Factory<P>;
@@ -593,7 +606,7 @@ declare namespace React {
   function createElement<
     P extends {},
     T extends Component<P, ComponentState>,
-    C extends ComponentClass<P>
+    C extends ComponentClass<P>,
   >(
     type: ClassType<P, T, C>,
     props?: (ClassAttributes<T> & P) | null,
@@ -725,9 +738,8 @@ declare namespace React {
    * // ContextType = { foo: string }
    * ```
    */
-  export type ContextType<C extends Context<any>> = C extends Context<infer T>
-    ? T
-    : never;
+  export type ContextType<C extends Context<any>> =
+    C extends Context<infer T> ? T : never;
 
   /**
    * Wraps your components to specify the value of this context for all components inside.
@@ -824,11 +836,11 @@ declare namespace React {
   function createContext<T>(
     // If you thought this should be optional, see
     // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/24509#issuecomment-382213106
-    defaultValue: T
+    defaultValue: T,
   ): Context<T>;
 
   function isValidElement<P>(
-    object: {} | null | undefined
+    object: {} | null | undefined,
   ): object is ReactElement<P>;
 
   /**
@@ -837,18 +849,18 @@ declare namespace React {
   const Children: {
     map<T, C>(
       children: C | readonly C[],
-      fn: (child: C, index: number) => T
+      fn: (child: C, index: number) => T,
     ): C extends null | undefined
       ? C
       : Array<Exclude<T, boolean | null | undefined>>;
     forEach<C>(
       children: C | readonly C[],
-      fn: (child: C, index: number) => void
+      fn: (child: C, index: number) => void,
     ): void;
     count(children: any): number;
     only<C>(children: C): C extends any[] ? never : C;
     toArray(
-      children: ReactNode | ReactNode[]
+      children: ReactNode | ReactNode[],
     ): Array<Exclude<ReactNode, boolean | null | undefined>>;
   };
   /**
@@ -980,7 +992,7 @@ declare namespace React {
      *
      * @see {@link https://react.dev/reference/react/Profiler#onrender-callback React Docs}
      */
-    commitTime: number
+    commitTime: number,
   ) => void;
 
   /**
@@ -1016,8 +1028,11 @@ declare namespace React {
   type ReactInstance = Component<any> | Element;
 
   // Base component for plain JS classes
-  interface Component<P = {}, S = {}, SS = any>
-    extends ComponentLifecycle<P, S, SS> {}
+  interface Component<P = {}, S = {}, SS = any> extends ComponentLifecycle<
+    P,
+    S,
+    SS
+  > {}
   class Component<P, S> {
     /**
      * If set, `this.context` will be set at runtime to the current value of the given Context.
@@ -1073,10 +1088,10 @@ declare namespace React {
       state:
         | ((
             prevState: Readonly<S>,
-            props: Readonly<P>
+            props: Readonly<P>,
           ) => Pick<S, K> | S | null)
         | (Pick<S, K> | S | null),
-      callback?: () => void
+      callback?: () => void,
     ): void;
 
     forceUpdate(callback?: () => void): void;
@@ -1183,7 +1198,7 @@ declare namespace React {
        *
        * @see {@link https://legacy.reactjs.org/docs/legacy-context.html#referencing-context-in-lifecycle-methods React Docs}
        */
-      deprecatedLegacyContext?: any
+      deprecatedLegacyContext?: any,
     ): ReactNode;
     /**
      * Used to declare the types of the props accepted by the
@@ -1270,7 +1285,7 @@ declare namespace React {
        *
        * @see {@link https://legacy.reactjs.org/docs/legacy-context.html#referencing-context-in-lifecycle-methods React Docs}
        */
-      deprecatedLegacyContext?: any
+      deprecatedLegacyContext?: any,
     ): ReactNode;
     propTypes?: WeakValidationMap<P> | undefined;
     contextTypes?: ValidationMap<any> | undefined;
@@ -1339,8 +1354,10 @@ declare namespace React {
    * @template P The props the component accepts.
    * @template S The internal state of the component.
    */
-  interface ComponentClass<P = {}, S = ComponentState>
-    extends StaticLifecycle<P, S> {
+  interface ComponentClass<P = {}, S = ComponentState> extends StaticLifecycle<
+    P,
+    S
+  > {
     new (
       props: P,
       /**
@@ -1348,7 +1365,7 @@ declare namespace React {
        *
        * @see {@link https://legacy.reactjs.org/docs/legacy-context.html#referencing-context-in-lifecycle-methods React Docs}
        */
-      deprecatedLegacyContext?: any
+      deprecatedLegacyContext?: any,
     ): Component<P, S>;
     /**
      * Used to declare the types of the props accepted by the
@@ -1401,10 +1418,10 @@ declare namespace React {
    * @see {@link https://www.npmjs.com/package/create-react-class `create-react-class` on npm}
    */
   interface ClassicComponentClass<P = {}> extends ComponentClass<P> {
-    new (props: P, deprecatedLegacyContext?: any): ClassicComponent<
-      P,
-      ComponentState
-    >;
+    new (
+      props: P,
+      deprecatedLegacyContext?: any,
+    ): ClassicComponent<P, ComponentState>;
     getDefaultProps?(): P;
   }
 
@@ -1420,7 +1437,7 @@ declare namespace React {
   type ClassType<
     P,
     T extends Component<P, ComponentState>,
-    C extends ComponentClass<P>
+    C extends ComponentClass<P>,
   > = C & (new (props: P, deprecatedLegacyContext?: any) => T);
 
   //
@@ -1431,8 +1448,7 @@ declare namespace React {
   // as React will _not_ call the deprecated lifecycle methods if any of the new lifecycle
   // methods are present.
   interface ComponentLifecycle<P, S, SS = any>
-    extends NewLifecycle<P, S, SS>,
-      DeprecatedLifecycle<P, S> {
+    extends NewLifecycle<P, S, SS>, DeprecatedLifecycle<P, S> {
     /**
      * Called immediately after a component is mounted. Setting state here will trigger re-rendering.
      */
@@ -1450,7 +1466,7 @@ declare namespace React {
     shouldComponentUpdate?(
       nextProps: Readonly<P>,
       nextState: Readonly<S>,
-      nextContext: any
+      nextContext: any,
     ): boolean;
     /**
      * Called immediately before a component is destroyed. Perform any necessary cleanup in this method, such as
@@ -1499,7 +1515,7 @@ declare namespace React {
      */
     getSnapshotBeforeUpdate?(
       prevProps: Readonly<P>,
-      prevState: Readonly<S>
+      prevState: Readonly<S>,
     ): SS | null;
     /**
      * Called immediately after updating occurs. Not called for the initial render.
@@ -1509,7 +1525,7 @@ declare namespace React {
     componentDidUpdate?(
       prevProps: Readonly<P>,
       prevState: Readonly<S>,
-      snapshot?: SS
+      snapshot?: SS,
     ): void;
   }
 
@@ -1577,7 +1593,7 @@ declare namespace React {
      */
     UNSAFE_componentWillReceiveProps?(
       nextProps: Readonly<P>,
-      nextContext: any
+      nextContext: any,
     ): void;
     /**
      * Called immediately before rendering when new props or state is received. Not called for the initial render.
@@ -1595,7 +1611,7 @@ declare namespace React {
     componentWillUpdate?(
       nextProps: Readonly<P>,
       nextState: Readonly<S>,
-      nextContext: any
+      nextContext: any,
     ): void;
     /**
      * Called immediately before rendering when new props or state is received. Not called for the initial render.
@@ -1615,7 +1631,7 @@ declare namespace React {
     UNSAFE_componentWillUpdate?(
       nextProps: Readonly<P>,
       nextState: Readonly<S>,
-      nextContext: any
+      nextContext: any,
     ): void;
   }
 
@@ -1697,7 +1713,7 @@ declare namespace React {
    * ```
    */
   function forwardRef<T, P = {}>(
-    render: ForwardRefRenderFunction<T, PropsWithoutRef<P>>
+    render: ForwardRefRenderFunction<T, PropsWithoutRef<P>>,
   ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 
   /**
@@ -1754,12 +1770,13 @@ declare namespace React {
    * ```
    */
   type ComponentProps<
-    T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-  > = T extends JSXElementConstructor<infer P>
-    ? P
-    : T extends keyof JSX.IntrinsicElements
-    ? JSX.IntrinsicElements[T]
-    : {};
+    T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
+  > =
+    T extends JSXElementConstructor<infer P>
+      ? P
+      : T extends keyof JSX.IntrinsicElements
+        ? JSX.IntrinsicElements[T]
+        : {};
 
   /**
    * Used to retrieve the props a component accepts with its ref. Can either be
@@ -1785,7 +1802,7 @@ declare namespace React {
    * ```
    */
   type ComponentPropsWithRef<T extends ElementType> = T extends new (
-    props: infer P
+    props: infer P,
   ) => Component<any, any>
     ? PropsWithoutRef<P> & RefAttributes<InstanceType<T>>
     : PropsWithRef<ComponentProps<T>>;
@@ -1806,12 +1823,12 @@ declare namespace React {
    * ```
    */
   type CustomComponentPropsWithRef<T extends ComponentType> = T extends new (
-    props: infer P
+    props: infer P,
   ) => Component<any, any>
     ? PropsWithoutRef<P> & RefAttributes<InstanceType<T>>
     : T extends (props: infer P, legacyContext?: any) => ReactNode
-    ? PropsWithRef<P>
-    : never;
+      ? PropsWithRef<P>
+      : never;
 
   /**
    * Used to retrieve the props a component accepts without its ref. Can either be
@@ -1840,13 +1857,14 @@ declare namespace React {
     ComponentProps<T>
   >;
 
-  type ComponentRef<T extends ElementType> = T extends NamedExoticComponent<
-    ComponentPropsWithoutRef<T> & RefAttributes<infer Method>
-  >
-    ? Method
-    : ComponentPropsWithRef<T> extends RefAttributes<infer Method>
-    ? Method
-    : never;
+  type ComponentRef<T extends ElementType> =
+    T extends NamedExoticComponent<
+      ComponentPropsWithoutRef<T> & RefAttributes<infer Method>
+    >
+      ? Method
+      : ComponentPropsWithRef<T> extends RefAttributes<infer Method>
+        ? Method
+        : never;
 
   // will show `Memo(${Component.displayName || Component.name})` in devtools by default,
   // but can be given its own specific name
@@ -1876,18 +1894,19 @@ declare namespace React {
    */
   function memo<P extends object>(
     Component: FunctionComponent<P>,
-    propsAreEqual?: (prevProps: Readonly<P>, nextProps: Readonly<P>) => boolean
+    propsAreEqual?: (prevProps: Readonly<P>, nextProps: Readonly<P>) => boolean,
   ): NamedExoticComponent<P>;
   function memo<T extends ComponentType<any>>(
     Component: T,
     propsAreEqual?: (
       prevProps: Readonly<ComponentProps<T>>,
-      nextProps: Readonly<ComponentProps<T>>
-    ) => boolean
+      nextProps: Readonly<ComponentProps<T>>,
+    ) => boolean,
   ): MemoExoticComponent<T>;
 
-  interface LazyExoticComponent<T extends ComponentType<any>>
-    extends ExoticComponent<CustomComponentPropsWithRef<T>> {
+  interface LazyExoticComponent<
+    T extends ComponentType<any>,
+  > extends ExoticComponent<CustomComponentPropsWithRef<T>> {
     readonly _result: T;
   }
 
@@ -1912,7 +1931,7 @@ declare namespace React {
    * ```
    */
   function lazy<T extends ComponentType<any>>(
-    load: () => Promise<{ default: T }>
+    load: () => Promise<{ default: T }>,
   ): LazyExoticComponent<T>;
 
   //
@@ -1956,18 +1975,10 @@ declare namespace React {
   type ReducerWithoutAction<S> = (prevState: S) => S;
   // types used to try and prevent the compiler from reducing S
   // to a supertype common with the second argument to useReducer()
-  type ReducerState<R extends Reducer<any, any>> = R extends Reducer<
-    infer S,
-    any
-  >
-    ? S
-    : never;
-  type ReducerAction<R extends Reducer<any, any>> = R extends Reducer<
-    any,
-    infer A
-  >
-    ? A
-    : never;
+  type ReducerState<R extends Reducer<any, any>> =
+    R extends Reducer<infer S, any> ? S : never;
+  type ReducerAction<R extends Reducer<any, any>> =
+    R extends Reducer<any, infer A> ? A : never;
   // The identity check is done with the SameValue algorithm (Object.is), which is stricter than ===
   type ReducerStateWithoutAction<R extends ReducerWithoutAction<any>> =
     R extends ReducerWithoutAction<infer S> ? S : never;
@@ -1989,7 +2000,7 @@ declare namespace React {
    * @see {@link https://react.dev/reference/react/useContext}
    */
   function useContext<T>(
-    context: Context<T> /*, (not public API) observedBits?: number|boolean */
+    context: Context<T> /*, (not public API) observedBits?: number|boolean */,
   ): T;
   /**
    * Returns a stateful value, and a function to update it.
@@ -1998,7 +2009,7 @@ declare namespace React {
    * @see {@link https://react.dev/reference/react/useState}
    */
   function useState<S>(
-    initialState: S | (() => S)
+    initialState: S | (() => S),
   ): [S, Dispatch<SetStateAction<S>>];
   // convenience overload when first argument is omitted
   /**
@@ -2009,7 +2020,7 @@ declare namespace React {
    */
   function useState<S = undefined>(): [
     S | undefined,
-    Dispatch<SetStateAction<S | undefined>>
+    Dispatch<SetStateAction<S | undefined>>,
   ];
   /**
    * An alternative to `useState`.
@@ -2025,7 +2036,7 @@ declare namespace React {
   function useReducer<R extends ReducerWithoutAction<any>, I>(
     reducer: R,
     initializerArg: I,
-    initializer: (arg: I) => ReducerStateWithoutAction<R>
+    initializer: (arg: I) => ReducerStateWithoutAction<R>,
   ): [ReducerStateWithoutAction<R>, DispatchWithoutAction];
   /**
    * An alternative to `useState`.
@@ -2041,7 +2052,7 @@ declare namespace React {
   function useReducer<R extends ReducerWithoutAction<any>>(
     reducer: R,
     initializerArg: ReducerStateWithoutAction<R>,
-    initializer?: undefined
+    initializer?: undefined,
   ): [ReducerStateWithoutAction<R>, DispatchWithoutAction];
   /**
    * An alternative to `useState`.
@@ -2059,7 +2070,7 @@ declare namespace React {
   function useReducer<R extends Reducer<any, any>, I>(
     reducer: R,
     initializerArg: I & ReducerState<R>,
-    initializer: (arg: I & ReducerState<R>) => ReducerState<R>
+    initializer: (arg: I & ReducerState<R>) => ReducerState<R>,
   ): [ReducerState<R>, Dispatch<ReducerAction<R>>];
   /**
    * An alternative to `useState`.
@@ -2075,7 +2086,7 @@ declare namespace React {
   function useReducer<R extends Reducer<any, any>, I>(
     reducer: R,
     initializerArg: I,
-    initializer: (arg: I) => ReducerState<R>
+    initializer: (arg: I) => ReducerState<R>,
   ): [ReducerState<R>, Dispatch<ReducerAction<R>>];
   /**
    * An alternative to `useState`.
@@ -2100,7 +2111,7 @@ declare namespace React {
   function useReducer<R extends Reducer<any, any>>(
     reducer: R,
     initialState: ReducerState<R>,
-    initializer?: undefined
+    initializer?: undefined,
   ): [ReducerState<R>, Dispatch<ReducerAction<R>>];
   /**
    * `useRef` returns a mutable ref object whose `.current` property is initialized to the passed argument
@@ -2178,7 +2189,7 @@ declare namespace React {
   function useImperativeHandle<T, R extends T>(
     ref: Ref<T> | undefined,
     init: () => R,
-    deps?: DependencyList
+    deps?: DependencyList,
   ): void;
   // I made 'inputs' required here and in useMemo as there's no point to memoizing without the memoization key
   // useCallback(X) is identical to just using X, useMemo(() => Y) is identical to just using Y.
@@ -2194,7 +2205,7 @@ declare namespace React {
   // eslint-disable-next-line @typescript-eslint/ban-types
   function useCallback<T extends Function>(
     callback: T,
-    deps: DependencyList
+    deps: DependencyList,
   ): T;
   /**
    * `useMemo` will only recompute the memoized value when one of the `deps` has changed.
@@ -2294,7 +2305,7 @@ declare namespace React {
    */
   export function useInsertionEffect(
     effect: EffectCallback,
-    deps?: DependencyList
+    deps?: DependencyList,
   ): void;
 
   /**
@@ -2307,7 +2318,7 @@ declare namespace React {
   export function useSyncExternalStore<Snapshot>(
     subscribe: (onStoreChange: () => void) => () => void,
     getSnapshot: () => Snapshot,
-    getServerSnapshot?: () => Snapshot
+    getServerSnapshot?: () => Snapshot,
   ): Snapshot;
 
   //
@@ -2339,16 +2350,23 @@ declare namespace React {
    * This might be a child element to the element on which the event listener is registered.
    * If you thought this should be `EventTarget & T`, see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
    */
-  interface SyntheticEvent<T = Element, E = Event>
-    extends BaseSyntheticEvent<E, EventTarget & T, EventTarget> {}
+  interface SyntheticEvent<T = Element, E = Event> extends BaseSyntheticEvent<
+    E,
+    EventTarget & T,
+    EventTarget
+  > {}
 
-  interface ClipboardEvent<T = Element>
-    extends SyntheticEvent<T, NativeClipboardEvent> {
+  interface ClipboardEvent<T = Element> extends SyntheticEvent<
+    T,
+    NativeClipboardEvent
+  > {
     clipboardData: DataTransfer;
   }
 
-  interface CompositionEvent<T = Element>
-    extends SyntheticEvent<T, NativeCompositionEvent> {
+  interface CompositionEvent<T = Element> extends SyntheticEvent<
+    T,
+    NativeCompositionEvent
+  > {
     data: string;
   }
 
@@ -2356,8 +2374,10 @@ declare namespace React {
     dataTransfer: DataTransfer;
   }
 
-  interface PointerEvent<T = Element>
-    extends MouseEvent<T, NativePointerEvent> {
+  interface PointerEvent<T = Element> extends MouseEvent<
+    T,
+    NativePointerEvent
+  > {
     pointerId: number;
     pressure: number;
     tangentialPressure: number;
@@ -2370,8 +2390,10 @@ declare namespace React {
     isPrimary: boolean;
   }
 
-  interface FocusEvent<Target = Element, RelatedTarget = Element>
-    extends SyntheticEvent<Target, NativeFocusEvent> {
+  interface FocusEvent<
+    Target = Element,
+    RelatedTarget = Element,
+  > extends SyntheticEvent<Target, NativeFocusEvent> {
     relatedTarget: (EventTarget & RelatedTarget) | null;
     target: EventTarget & Target;
   }
@@ -2427,8 +2449,10 @@ declare namespace React {
     which: number;
   }
 
-  interface MouseEvent<T = Element, E = NativeMouseEvent>
-    extends UIEvent<T, E> {
+  interface MouseEvent<T = Element, E = NativeMouseEvent> extends UIEvent<
+    T,
+    E
+  > {
     altKey: boolean;
     button: number;
     buttons: number;
@@ -2464,8 +2488,10 @@ declare namespace React {
     touches: TouchList;
   }
 
-  interface UIEvent<T = Element, E = NativeUIEvent>
-    extends SyntheticEvent<T, E> {
+  interface UIEvent<T = Element, E = NativeUIEvent> extends SyntheticEvent<
+    T,
+    E
+  > {
     detail: number;
     view: AbstractView;
   }
@@ -2477,15 +2503,19 @@ declare namespace React {
     deltaZ: number;
   }
 
-  interface AnimationEvent<T = Element>
-    extends SyntheticEvent<T, NativeAnimationEvent> {
+  interface AnimationEvent<T = Element> extends SyntheticEvent<
+    T,
+    NativeAnimationEvent
+  > {
     animationName: string;
     elapsedTime: number;
     pseudoElement: string;
   }
 
-  interface TransitionEvent<T = Element>
-    extends SyntheticEvent<T, NativeTransitionEvent> {
+  interface TransitionEvent<T = Element> extends SyntheticEvent<
+    T,
+    NativeTransitionEvent
+  > {
     elapsedTime: number;
     propertyName: string;
     pseudoElement: string;
@@ -4529,8 +4559,8 @@ declare namespace React {
     [K in keyof T]?: null extends T[K]
       ? Validator<T[K] | null | undefined>
       : undefined extends T[K]
-      ? Validator<T[K] | null | undefined>
-      : Validator<T[K]>;
+        ? Validator<T[K] | null | undefined>
+        : Validator<T[K]>;
   };
 
   /**
@@ -4566,18 +4596,18 @@ declare namespace React {
   interface ReactChildren {
     map<T, C>(
       children: C | readonly C[],
-      fn: (child: C, index: number) => T
+      fn: (child: C, index: number) => T,
     ): C extends null | undefined
       ? C
       : Array<Exclude<T, boolean | null | undefined>>;
     forEach<C>(
       children: C | readonly C[],
-      fn: (child: C, index: number) => void
+      fn: (child: C, index: number) => void,
     ): void;
     count(children: any): number;
     only<C>(children: C): C extends any[] ? never : C;
     toArray(
-      children: ReactNode | ReactNode[]
+      children: ReactNode | ReactNode[],
     ): Array<Exclude<ReactNode, boolean | null | undefined>>;
   }
 
@@ -4625,10 +4655,8 @@ declare namespace React {
     type ElementType = GlobalJSXElementType;
     interface Element extends GlobalJSXElement {}
     interface ElementClass extends GlobalJSXElementClass {}
-    interface ElementAttributesProperty
-      extends GlobalJSXElementAttributesProperty {}
-    interface ElementChildrenAttribute
-      extends GlobalJSXElementChildrenAttribute {}
+    interface ElementAttributesProperty extends GlobalJSXElementAttributesProperty {}
+    interface ElementChildrenAttribute extends GlobalJSXElementChildrenAttribute {}
 
     type LibraryManagedAttributes<C, P> = GlobalJSXLibraryManagedAttributes<
       C,
@@ -4636,8 +4664,9 @@ declare namespace React {
     >;
 
     interface IntrinsicAttributes extends GlobalJSXIntrinsicAttributes {}
-    interface IntrinsicClassAttributes<T>
-      extends GlobalJSXIntrinsicClassAttributes<T> {}
+    interface IntrinsicClassAttributes<
+      T,
+    > extends GlobalJSXIntrinsicClassAttributes<T> {}
     interface IntrinsicElements extends GlobalJSXIntrinsicElements {}
   }
 }
@@ -4661,14 +4690,14 @@ type MergePropTypes<P, T> =
       IsExactlyAny<P> extends true
       ? T
       : // If declared props have indexed properties, ignore inferred props entirely as keyof gets widened
-      string extends keyof P
-      ? P
-      : // Prefer declared types which are not exactly any
-        Pick<P, NotExactlyAnyPropertyKeys<P>> &
-          // For props which are exactly any, use the type inferred from propTypes if present
-          Pick<T, Exclude<keyof T, NotExactlyAnyPropertyKeys<P>>> &
-          // Keep leftover props not specified in propTypes
-          Pick<P, Exclude<keyof P, keyof T>>
+        string extends keyof P
+        ? P
+        : // Prefer declared types which are not exactly any
+          Pick<P, NotExactlyAnyPropertyKeys<P>> &
+            // For props which are exactly any, use the type inferred from propTypes if present
+            Pick<T, Exclude<keyof T, NotExactlyAnyPropertyKeys<P>>> &
+            // Keep leftover props not specified in propTypes
+            Pick<P, Exclude<keyof P, keyof T>>
     : never;
 
 type InexactPartial<T> = { [K in keyof T]?: T[K] | undefined };
@@ -4691,10 +4720,10 @@ type ReactManagedAttributes<C, P> = C extends {
 }
   ? Defaultize<MergePropTypes<P, PropTypes.InferProps<T>>, D>
   : C extends { propTypes: infer T }
-  ? MergePropTypes<P, PropTypes.InferProps<T>>
-  : C extends { defaultProps: infer D }
-  ? Defaultize<P, D>
-  : P;
+    ? MergePropTypes<P, PropTypes.InferProps<T>>
+    : C extends { defaultProps: infer D }
+      ? Defaultize<P, D>
+      : P;
 
 /**
  * @deprecated Use `React.JSX` instead of the global `JSX` namespace.
@@ -5208,14 +5237,14 @@ interface IntrinsicElements {
 type GlobalJSXElementType = ElementType;
 interface GlobalJSXElement extends Element {}
 interface GlobalJSXElementClass extends ElementClass {}
-interface GlobalJSXElementAttributesProperty
-  extends ElementAttributesProperty {}
+interface GlobalJSXElementAttributesProperty extends ElementAttributesProperty {}
 interface GlobalJSXElementChildrenAttribute extends ElementChildrenAttribute {}
 
 type GlobalJSXLibraryManagedAttributes<C, P> = LibraryManagedAttributes<C, P>;
 
 interface GlobalJSXIntrinsicAttributes extends IntrinsicAttributes {}
-interface GlobalJSXIntrinsicClassAttributes<T>
-  extends IntrinsicClassAttributes<T> {}
+interface GlobalJSXIntrinsicClassAttributes<
+  T,
+> extends IntrinsicClassAttributes<T> {}
 
 interface GlobalJSXIntrinsicElements extends IntrinsicElements {}

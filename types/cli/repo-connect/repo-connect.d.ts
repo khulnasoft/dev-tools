@@ -1,0 +1,9 @@
+import type { DevToolsSys } from "../../types";
+import type { CLIArgs } from "../index";
+/**
+ * Main connect-repo command handler
+ */
+export declare function runRepoConnectCommand(
+  sys: DevToolsSys,
+  args: CLIArgs,
+): Promise<void>;

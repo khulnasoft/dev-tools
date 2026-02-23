@@ -1,6 +1,8 @@
-declare const _default: (devToolsOpts?: RemixKhulnasoftDevToolsOptions) => (remixConfig: any) => any;
+declare const _default: (
+  devToolsOpts?: RemixKhulnasoftDevToolsOptions,
+) => (remixConfig: any) => any;
 export default _default;
 export interface RemixKhulnasoftDevToolsOptions {
-    enabled?: boolean;
-    devToolsServerPort?: number;
+  enabled?: boolean;
+  devToolsServerPort?: number;
 }

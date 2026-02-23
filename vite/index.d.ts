@@ -1,1 +1,1 @@
-export * from "../types/vite";
+export * from "../types/vite/main";

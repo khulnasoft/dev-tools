@@ -10,7 +10,9 @@ export declare const KHULNASOFT_AUTH_CONNECT_PATH = "/~khulnasoft-connect";
 export declare const KHULNASOFT_AUTH_RETURN_PATH = "/~khulnasoft-connected";
 export declare const DEV_TOOLS_API_PATH = "/~khulnasoft-dev-tools";
 export declare const DEV_TOOLS_CLIENT_SCRIPT_PATH = "/~khulnasoft-dev-tools.js";
-export declare const DEV_TOOLS_SERVER_CLOSE_PATH = "/~khulnasoft-dev-tools-close";
+export declare const DEV_TOOLS_SERVER_CLOSE_PATH =
+  "/~khulnasoft-dev-tools-close";
 export declare const DEV_TOOLS_MAPPINGS_PATH = "/mappings";
-export declare const AMPLITUDE_PROXY_URL = "https://cdn.khulnasoft.com/api/v1/proxy-api?url=https://api2.amplitude.com/2/httpapi";
+export declare const AMPLITUDE_PROXY_URL =
+  "https://cdn.khulnasoft.com/api/v1/proxy-api?url=https://api2.amplitude.com/2/httpapi";
 export declare const SPACE_KIND_QS = "kind";

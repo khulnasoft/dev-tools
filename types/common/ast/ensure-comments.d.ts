@@ -1,1 +1,5 @@
-export declare function ensureComments(code: string, commentText: string[], lineTextAfterComments: string): string;
+export declare function ensureComments(
+  code: string,
+  commentText: string[],
+  lineTextAfterComments: string,
+): string;

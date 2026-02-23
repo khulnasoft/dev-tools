@@ -1,56 +1,61 @@
-import type { Credentials, FigmaAuth } from "./credentials";
-import type { ExportType } from "../types";
-export interface FigmaComponentInput {
-    id: string;
-    name: string;
-    value?: any;
-    type: string;
-    baseType: "text" | "variant" | "boolean" | "slot";
-    variantOptions?: string[];
-    isDefault: boolean;
-    ref?: string;
+import { type Credentials, type FigmaAuth } from "./credentials";
+import type { DevToolsSys } from "../types";
+import type { CLIArgs } from "./index";
+import type { FigmaKhulnasoftLink, FigmaComponentInfo } from "$/ai-utils";
+interface FigmaAPIOpts {
+  auth: {
+    access_token: string;
+    oauth: boolean;
+  };
+  params?: Record<string, any>;
 }
-export interface FigmaKhulnasoftLink {
-    khulnasoftName: string;
-    figmaName: string;
-    figmaKey: string;
-    figmaUrl?: string;
-    inputMapper?: string;
-    originalInputMapper?: string;
-    exportType?: ExportType;
-    importName?: string;
-    importPath?: string;
-    source: string;
-    loc?: string;
-}
-export interface FigmaComponentInfo {
-    documentName: string;
-    key: string;
-    tree: string;
-    jsx: string;
-    name: string;
-    inputs: FigmaComponentInput[];
-    description: string;
-    documentationLinks: string[];
-    instanceId: string;
-}
-export declare const REMOVE_EMOJI: RegExp;
 export declare const parseFigmaURL: (str: string) => {
-    fileID: string;
-    nodeId: string;
+  fileID: string;
+  nodeId: string;
 } | null;
-export declare const getFigmaNodeData: (auth: {
+export declare const figmaApi: <T = any>(
+  sys: DevToolsSys,
+  args: CLIArgs,
+  path: string,
+  { auth, params }: FigmaAPIOpts,
+) => Promise<T>;
+export declare const getFigmaNodeData: (
+  sys: DevToolsSys,
+  args: CLIArgs,
+  auth: {
     access_token: string;
     oauth: boolean;
-}, fileId: string, nodeIds: string, depth?: number) => Promise<any>;
-export declare function getFigmaComponentName(name: string): string;
-export declare function getImportDataFromToken(credentials: Credentials, token: string, verbose: boolean): Promise<(readonly [string, FigmaComponentInfo])[]>;
+  },
+  fileId: string,
+  nodeIds: string,
+  depth?: number,
+) => Promise<any>;
+export declare function getImportDataFromToken(
+  credentials: Credentials,
+  token: string,
+  verbose: boolean,
+): Promise<(readonly [string, FigmaComponentInfo])[]>;
 export declare function needsFigmaAuth(urls: string[]): boolean;
-export declare function getFigmaNodeDataFromURLs(figmaAuth: {
-    access_token: string;
-    oauth: boolean;
-} | undefined, khulnasoftAuth: {
+export declare function getFigmaNodeDataFromURLs(
+  sys: DevToolsSys,
+  args: CLIArgs,
+  figmaAuth:
+    | {
+        access_token: string;
+        oauth: boolean;
+      }
+    | undefined,
+  khulnasoftAuth: {
     privateKey: string;
     spaceId: string;
-}, urls: string[]): Promise<(readonly [string, FigmaComponentInfo])[]>;
-export declare function inPlaceResolveFigmaURLs(figmaAuth: FigmaAuth, figmaKhulnasoftLinks: FigmaKhulnasoftLink[], figmaLinksToResolve: string[]): Promise<void>;
+  },
+  urls: string[],
+): Promise<(readonly [string, FigmaComponentInfo])[]>;
+export declare function inPlaceResolveFigmaURLs(
+  sys: DevToolsSys,
+  args: CLIArgs,
+  figmaAuth: FigmaAuth,
+  figmaKhulnasoftLinks: FigmaKhulnasoftLink[],
+  figmaLinksToResolve: string[],
+): Promise<void>;
+export {};

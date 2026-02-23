@@ -1,3 +1,99 @@
-import{createDevTools as w,getClientScript as m}from"../core/index.mjs";import{createDevToolsNodeSys as $}from"../node/index.mjs";import{createDevToolsServer as T}from"../server/index.mjs";async function p(s,c){let t=await s.readFile(c);return typeof t=="string"?f(t):null}function f(s){let c={},t=s.replace(/\r\n?/gm,`
-`),n;for(;(n=d.exec(t))!=null;){let l=n[1],e=n[2]||"";e=e.trim();let r=e[0];e=e.replace(/^(['"`])([\s\S]*)\1$/gm,"$2"),r==='"'&&(e=e.replace(/\\n/g,`
-`),e=e.replace(/\\r/g,"\r")),c[l]=e}return c}var d=/(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/gm;import b from"node:path";function A(s={}){return{name:"vite-plugin-khulnasoft-dev-tools",async configureServer(t){let n=await $({cwd:b.normalize(t.config.root)}),l=await w(n),e=await T({...l,getClientId:()=>"vite-khulnasoft-dev-tools",closeAppServer:async()=>{n.debug("close server"),await t?.close()},restartAppServer:async()=>{n.debug("restart server"),await t?.restart()},enableAppWatch:async r=>{if(r){n.debug("enable watch"),t?.watcher.add(t.config.root);let o=n.join(t.config.root,".git"),a=n.join(t.config.root,"node_modules");t?.watcher.unwatch([o,a])}else n.debug("disable watch"),t?.watcher.unwatch(t.config.root);return r},...n,...s});t.watcher.on("change",async r=>{if(r.includes(".env")){let o=await p(n,r);o&&Object.keys(o).forEach(i=>{process.env[i]=o[i]})}}),t.middlewares.use(async(r,o,a)=>{try{let i=o.end;o.end=function(...u){if((o.getHeader("Content-Type")||"").toString().includes("text/html")){let g=m(e.getUrl());o.write(`<script>${g}</script>`)}return i.apply(this,u)},a()}catch(i){a(i)}})}}}export{A as khulnasoftDevTools};
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+import { createDevTools as E } from "../core/index.mjs";
+import { createDevToolsNodeSys as T } from "../node/index.mjs";
+import { createDevToolsServer as w } from "../server/index.mjs";
+async function p(s, c) {
+  let t = await s.readFile(c);
+  return typeof t == "string" ? f(t) : null;
+}
+function f(s) {
+  let c = {},
+    t = s.replace(
+      /\r\n?/gm,
+      `
+`,
+    ),
+    e;
+  for (; (e = _.exec(t)) != null; ) {
+    let l = e[1],
+      o = e[2] || "";
+    o = o.trim();
+    let r = o[0];
+    ((o = o.replace(/^(['"`])([\s\S]*)\1$/gm, "$2")),
+      r === '"' &&
+        ((o = o.replace(
+          /\\n/g,
+          `
+`,
+        )),
+        (o = o.replace(/\\r/g, "\r"))),
+      (c[l] = o));
+  }
+  return c;
+}
+var _ =
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/gm;
+import m from "node:path";
+var u = "/~khulnasoft-dev-tools.js";
+function h(s = {}) {
+  return {
+    name: "vite-plugin-khulnasoft-dev-tools",
+    async configureServer(t) {
+      if (process.argv.includes("codegen")) return;
+      let e = await T({ cwd: m.normalize(t.config.root) }),
+        l = await E(e),
+        o = await w({
+          ...l,
+          getClientId: () => "vite-khulnasoft-dev-tools",
+          closeAppServer: async () => {
+            (e.debug("close server"), await t?.close());
+          },
+          restartAppServer: async () => {
+            (e.debug("restart server"), await t?.restart());
+          },
+          enableAppWatch: async (r) => {
+            if (r) {
+              (e.debug("enable watch"), t?.watcher.add(t.config.root));
+              let n = e.join(t.config.root, ".git"),
+                a = e.join(t.config.root, "node_modules");
+              t?.watcher.unwatch([n, a]);
+            } else
+              (e.debug("disable watch"), t?.watcher.unwatch(t.config.root));
+            return r;
+          },
+          ...e,
+          ...s,
+        });
+      (t.watcher.on("change", async (r) => {
+        if (r.includes(".env")) {
+          let n = await p(e, r);
+          n &&
+            Object.keys(n).forEach((i) => {
+              process.env[i] = n[i];
+            });
+        }
+      }),
+        t.middlewares.use(async (r, n, a) => {
+          try {
+            let i = n.end;
+            ((n.end = function (...d) {
+              if (
+                (n.getHeader("Content-Type") || "")
+                  .toString()
+                  .includes("text/html")
+              ) {
+                let g = new URL(u, o.getUrl());
+                n.write(`<script defer src="${g}"></script>`);
+              }
+              return i.apply(this, d);
+            }),
+              a());
+          } catch (i) {
+            a(i);
+          }
+        }));
+    },
+  };
+}
+export { h as khulnasoftDevTools };
